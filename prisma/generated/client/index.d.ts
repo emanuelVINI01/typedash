@@ -5652,6 +5652,7 @@ export namespace Prisma {
     duration: number | null
     logHash: string | null
     createdAt: Date | null
+    userName: string | null
     userId: string | null
   }
 
@@ -5662,6 +5663,7 @@ export namespace Prisma {
     duration: number | null
     logHash: string | null
     createdAt: Date | null
+    userName: string | null
     userId: string | null
   }
 
@@ -5673,6 +5675,7 @@ export namespace Prisma {
     events: number
     logHash: number
     createdAt: number
+    userName: number
     userId: number
     _all: number
   }
@@ -5697,6 +5700,7 @@ export namespace Prisma {
     duration?: true
     logHash?: true
     createdAt?: true
+    userName?: true
     userId?: true
   }
 
@@ -5707,6 +5711,7 @@ export namespace Prisma {
     duration?: true
     logHash?: true
     createdAt?: true
+    userName?: true
     userId?: true
   }
 
@@ -5718,6 +5723,7 @@ export namespace Prisma {
     events?: true
     logHash?: true
     createdAt?: true
+    userName?: true
     userId?: true
     _all?: true
   }
@@ -5816,6 +5822,7 @@ export namespace Prisma {
     events: JsonValue
     logHash: string
     createdAt: Date
+    userName: string
     userId: string
     _count: TypingMetricCountAggregateOutputType | null
     _avg: TypingMetricAvgAggregateOutputType | null
@@ -5846,6 +5853,7 @@ export namespace Prisma {
     events?: boolean
     logHash?: boolean
     createdAt?: boolean
+    userName?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["typingMetric"]>
@@ -5858,6 +5866,7 @@ export namespace Prisma {
     events?: boolean
     logHash?: boolean
     createdAt?: boolean
+    userName?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["typingMetric"]>
@@ -5870,6 +5879,7 @@ export namespace Prisma {
     events?: boolean
     logHash?: boolean
     createdAt?: boolean
+    userName?: boolean
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["typingMetric"]>
@@ -5882,10 +5892,11 @@ export namespace Prisma {
     events?: boolean
     logHash?: boolean
     createdAt?: boolean
+    userName?: boolean
     userId?: boolean
   }
 
-  export type TypingMetricOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wpm" | "accuracy" | "duration" | "events" | "logHash" | "createdAt" | "userId", ExtArgs["result"]["typingMetric"]>
+  export type TypingMetricOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "wpm" | "accuracy" | "duration" | "events" | "logHash" | "createdAt" | "userName" | "userId", ExtArgs["result"]["typingMetric"]>
   export type TypingMetricInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5909,6 +5920,7 @@ export namespace Prisma {
       events: Prisma.JsonValue
       logHash: string
       createdAt: Date
+      userName: string
       userId: string
     }, ExtArgs["result"]["typingMetric"]>
     composites: {}
@@ -6341,6 +6353,7 @@ export namespace Prisma {
     readonly events: FieldRef<"TypingMetric", 'Json'>
     readonly logHash: FieldRef<"TypingMetric", 'String'>
     readonly createdAt: FieldRef<"TypingMetric", 'DateTime'>
+    readonly userName: FieldRef<"TypingMetric", 'String'>
     readonly userId: FieldRef<"TypingMetric", 'String'>
   }
     
@@ -6831,6 +6844,7 @@ export namespace Prisma {
     events: 'events',
     logHash: 'logHash',
     createdAt: 'createdAt',
+    userName: 'userName',
     userId: 'userId'
   };
 
@@ -7213,6 +7227,7 @@ export namespace Prisma {
     events?: JsonFilter<"TypingMetric">
     logHash?: StringFilter<"TypingMetric"> | string
     createdAt?: DateTimeFilter<"TypingMetric"> | Date | string
+    userName?: StringFilter<"TypingMetric"> | string
     userId?: StringFilter<"TypingMetric"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -7225,6 +7240,7 @@ export namespace Prisma {
     events?: SortOrder
     logHash?: SortOrder
     createdAt?: SortOrder
+    userName?: SortOrder
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -7240,6 +7256,7 @@ export namespace Prisma {
     duration?: FloatFilter<"TypingMetric"> | number
     events?: JsonFilter<"TypingMetric">
     createdAt?: DateTimeFilter<"TypingMetric"> | Date | string
+    userName?: StringFilter<"TypingMetric"> | string
     userId?: StringFilter<"TypingMetric"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "logHash">
@@ -7252,6 +7269,7 @@ export namespace Prisma {
     events?: SortOrder
     logHash?: SortOrder
     createdAt?: SortOrder
+    userName?: SortOrder
     userId?: SortOrder
     _count?: TypingMetricCountOrderByAggregateInput
     _avg?: TypingMetricAvgOrderByAggregateInput
@@ -7271,6 +7289,7 @@ export namespace Prisma {
     events?: JsonWithAggregatesFilter<"TypingMetric">
     logHash?: StringWithAggregatesFilter<"TypingMetric"> | string
     createdAt?: DateTimeWithAggregatesFilter<"TypingMetric"> | Date | string
+    userName?: StringWithAggregatesFilter<"TypingMetric"> | string
     userId?: StringWithAggregatesFilter<"TypingMetric"> | string
   }
 
@@ -7544,6 +7563,7 @@ export namespace Prisma {
     events: JsonNullValueInput | InputJsonValue
     logHash: string
     createdAt?: Date | string
+    userName: string
     user: UserCreateNestedOneWithoutResultsInput
   }
 
@@ -7555,6 +7575,7 @@ export namespace Prisma {
     events: JsonNullValueInput | InputJsonValue
     logHash: string
     createdAt?: Date | string
+    userName: string
     userId: string
   }
 
@@ -7566,6 +7587,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutResultsNestedInput
   }
 
@@ -7577,6 +7599,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7588,6 +7611,7 @@ export namespace Prisma {
     events: JsonNullValueInput | InputJsonValue
     logHash: string
     createdAt?: Date | string
+    userName: string
     userId: string
   }
 
@@ -7599,6 +7623,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
   }
 
   export type TypingMetricUncheckedUpdateManyInput = {
@@ -7609,6 +7634,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7974,6 +8000,7 @@ export namespace Prisma {
     events?: SortOrder
     logHash?: SortOrder
     createdAt?: SortOrder
+    userName?: SortOrder
     userId?: SortOrder
   }
 
@@ -7990,6 +8017,7 @@ export namespace Prisma {
     duration?: SortOrder
     logHash?: SortOrder
     createdAt?: SortOrder
+    userName?: SortOrder
     userId?: SortOrder
   }
 
@@ -8000,6 +8028,7 @@ export namespace Prisma {
     duration?: SortOrder
     logHash?: SortOrder
     createdAt?: SortOrder
+    userName?: SortOrder
     userId?: SortOrder
   }
 
@@ -8682,6 +8711,7 @@ export namespace Prisma {
     events: JsonNullValueInput | InputJsonValue
     logHash: string
     createdAt?: Date | string
+    userName: string
   }
 
   export type TypingMetricUncheckedCreateWithoutUserInput = {
@@ -8692,6 +8722,7 @@ export namespace Prisma {
     events: JsonNullValueInput | InputJsonValue
     logHash: string
     createdAt?: Date | string
+    userName: string
   }
 
   export type TypingMetricCreateOrConnectWithoutUserInput = {
@@ -8791,6 +8822,7 @@ export namespace Prisma {
     events?: JsonFilter<"TypingMetric">
     logHash?: StringFilter<"TypingMetric"> | string
     createdAt?: DateTimeFilter<"TypingMetric"> | Date | string
+    userName?: StringFilter<"TypingMetric"> | string
     userId?: StringFilter<"TypingMetric"> | string
   }
 
@@ -8878,6 +8910,7 @@ export namespace Prisma {
     events: JsonNullValueInput | InputJsonValue
     logHash: string
     createdAt?: Date | string
+    userName: string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -8948,6 +8981,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
   }
 
   export type TypingMetricUncheckedUpdateWithoutUserInput = {
@@ -8958,6 +8992,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
   }
 
   export type TypingMetricUncheckedUpdateManyWithoutUserInput = {
@@ -8968,6 +9003,7 @@ export namespace Prisma {
     events?: JsonNullValueInput | InputJsonValue
     logHash?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userName?: StringFieldUpdateOperationsInput | string
   }
 
 

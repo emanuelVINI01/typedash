@@ -164,6 +164,7 @@ exports.Prisma.TypingMetricScalarFieldEnum = {
   events: 'events',
   logHash: 'logHash',
   createdAt: 'createdAt',
+  userName: 'userName',
   userId: 'userId'
 };
 

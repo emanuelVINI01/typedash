@@ -69,9 +69,9 @@ model TypingMetric {
   logHash String @unique
 
   createdAt DateTime @default(now())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userName  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([wpm])
 }

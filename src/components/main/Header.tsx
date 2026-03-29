@@ -12,12 +12,13 @@ export function Header() {
       {/* Logo */}
       <div className="flex items-center gap-2">
         <Keyboard className="w-6 h-6" style={{ color: "#bd93f9" }} />
-        <span
+        <a
           className="text-xl font-bold tracking-tight"
           style={{ color: "#bd93f9" }}
+          href="/"
         >
           TypeDash
-        </span>
+        </a>
       </div>
 
       <div className="flex items-center gap-3">
