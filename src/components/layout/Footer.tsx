@@ -20,13 +20,13 @@ export default function Footer() {
                 {/* Links */}
                 <div className="flex flex-col items-center md:items-end gap-3 text-sm">
                     <a
-                        href="https://github.com/emanuelVINI/typing-metrics"
+                        href="https://github.com/emanuelVINI01/typedash"
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center gap-2 text-[#f8f8f2] hover:text-[#bd93f9] transition-colors bg-[#bd93f9]/10 px-4 py-2 rounded-lg border border-[#bd93f9]/20 hover:border-[#bd93f9]/50"
                     >
                         <FaGithub className="w-4 h-4" />
-                        <span className="font-medium">emanuelVINI/typing-metrics</span>
+                        <span className="font-medium">emanuelVINI01/typedash</span>
                     </a>
 
                     <div className="flex items-center gap-1.5 mt-2">
@@ -34,7 +34,7 @@ export default function Footer() {
                         <Heart className="w-4 h-4 text-[#ff79c6] fill-[#ff79c6] animate-pulse" />
                         <span>por</span>
                         <a
-                            href="https://github.com/emanuelVINI"
+                            href="https://github.com/emanuelVINI01"
                             target="_blank"
                             rel="noreferrer"
                             className="text-[#f8f8f2] hover:text-[#8be9fd] transition-colors font-medium ml-1 underline decoration-[#8be9fd]/30 hover:decoration-[#8be9fd] underline-offset-4"

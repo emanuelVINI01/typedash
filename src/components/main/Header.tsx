@@ -2,7 +2,6 @@
 
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Keyboard } from "lucide-react";
 
 export function Header() {
   const { data: session } = useSession();
@@ -11,7 +10,11 @@ export function Header() {
     <header className="w-full flex items-center justify-between px-8 py-5">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <Keyboard className="w-6 h-6" style={{ color: "#bd93f9" }} />
+        <img 
+          src="/logo.png" 
+          alt="TypeDash Logo" 
+          className="w-8 h-8 rounded-lg shadow-lg shadow-[#bd93f9]/20" 
+        />
         <a
           className="text-xl font-bold tracking-tight"
           style={{ color: "#bd93f9" }}
