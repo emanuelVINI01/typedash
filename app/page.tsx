@@ -13,6 +13,7 @@ import { TypingArea } from "@/src/components/main/TypingArea";
 import { ResultsScreen } from "@/src/components/main/ResultsScreen";
 import { Phase, CharStatus, WpmDataPoint, TypingEvent } from "@/src/types/typing";
 import { RankingSection, RankingSectionHandle } from "@/src/components/main/RankingSection";
+import { useSession } from "next-auth/react";
 
 // ─── Constants & Types ──────────────────────────────────────────────────────
 
@@ -30,6 +31,8 @@ export default function TypeDashPage() {
   const [timeLeft, setTimeLeft] = useState(TEST_DURATION);
   const [wpmHistory, setWpmHistory] = useState<WpmDataPoint[]>([]);
   const rankingRef = useRef<RankingSectionHandle>(null);
+
+  const { data: session } = useSession();
 
   // Track correct/incorrect key presses
   const correctRef = useRef(0);
@@ -131,7 +134,7 @@ export default function TypeDashPage() {
       // Handle start triggers
       if (phase === "idle") {
         if (key === "Shift" || key === "Control" || key === "Alt" || key === "Meta") return;
-        
+
         setPhase("typing");
         setTimeLeft(TEST_DURATION);
         startTimer();
@@ -139,7 +142,7 @@ export default function TypeDashPage() {
         // If it was a click, Enter, or the user specifically wants to "erase" the first char
         // we return here without processing the key as part of the typing test.
         if (key === "Click" || key === "Enter") return;
-        
+
         // "Apagar o primeiro caractere" - skipping the first key press as requested
         return;
       }
@@ -260,10 +263,11 @@ export default function TypeDashPage() {
             accuracy={liveAccuracy}
             phase={phase}
           />
-          <p className="text-center text-purple font-bold text-lg">
-            Seus resultados não serão salvos se você não estiver logado. 
-            <a href="/auth/login" className="text-blue-300"> Entre para salvar</a>.
-          </p>
+          {!(session?.user) && (
+            <p className="text-center text-purple font-bold text-lg">
+              Seus resultados não serão salvos se você não estiver logado.
+              <a href="/auth/login" className="text-blue-300"> Entre para salvar</a>.
+            </p>)}
           {/* Typing Area OR Results */}
           {phase !== "results" ? (
             <TypingArea
