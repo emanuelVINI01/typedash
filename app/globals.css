@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #282a36;
+  --foreground: #f8f8f2;
+  --comment: #6272a4;
+  --purple: #bd93f9;
+  --red: #ff5555;
+  --green: #50fa7b;
+  --cyan: #8be9fd;
+  --current-line: #44475a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-comment: var(--comment);
+  --color-purple: var(--purple);
+  --color-red: var(--red);
+  --color-green: var(--green);
+  --color-cyan: var(--cyan);
+  --color-current-line: var(--current-line);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(189, 147, 249, 0); }
+  50% { box-shadow: 0 0 12px 4px rgba(189, 147, 249, 0.25); }
+}
+
+.stat-card {
+  animation: pulse-glow 3s ease-in-out infinite;
 }
