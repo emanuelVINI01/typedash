@@ -12,10 +12,39 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
 export const metadata: Metadata = {
-  title: "TypeDash – Teste de Velocidade de Digitação",
-  description: "Painel de velocidade e precisão de digitação estilo MonkeyType construído com Next.js e tema Dracula.",
-};
+  title: 'TypeDash | Desafio de Digitação para Devs',
+  description: 'Messa sua velocidade de codificação e precisão em tempo real. O dashboard definitivo para desenvolvedores que buscam performance.',
+  keywords: ['typing test', 'velocidade de digitação', 'wpm', 'programador', 'dracula theme', 'typedash'],
+  authors: [{ name: 'Emanuel' }],
+  openGraph: {
+    title: 'TypeDash - Performance em cada tecla',
+    description: 'Será que você digita tão rápido quanto coda? Teste seu WPM agora.',
+    url: 'https://typedash-beta.vercel.app', // Substitua pela sua URL real
+    siteName: 'TypeDash',
+    images: [
+      {
+        url: '/dash_image.png', // Uma screenshot do seu dashboard ficaria animal aqui
+        width: 1080,
+        height: 630,
+        alt: 'Preview do TypeDash Dashboard',
+      },
+    ],
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TypeDash | Coding Speed Test',
+    description: 'Teste sua velocidade de digitação com o tema Dracula.',
+    images: ['/dash_image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 import { AuthProvider } from "@/src/components/auth/session-provider";
 import Footer from "@/src/components/layout/Footer";
