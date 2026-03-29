@@ -97,19 +97,19 @@ export function ResultsScreen({
           />
         <StatCard
           icon={<Activity className="w-6 h-6" />}
-          label="Accuracy"
+          label="Precisão"
           value={`${accuracy}%`}
           color="#50fa7b"
           />
         <StatCard
           icon={<CheckCircle2 className="w-6 h-6" />}
-          label="Correct"
+          label="Acertos"
           value={correct}
           color="#50fa7b"
           />
         <StatCard
           icon={<XCircle className="w-6 h-6" />}
-          label="Incorrect"
+          label="Erros"
           value={incorrect}
           color="#ff5555"
           />
@@ -124,7 +124,7 @@ export function ResultsScreen({
           className="text-xs uppercase tracking-widest mb-4"
           style={{ color: "#6272a4" }}
         >
-          WPM over time
+          WPM ao longo do tempo
         </p>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={wpmHistory} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>

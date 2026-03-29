@@ -62,7 +62,7 @@ export function TypingArea({
           className="absolute inset-0 flex items-center justify-center rounded-2xl text-sm tracking-widest uppercase z-10 cursor-pointer transition-all duration-300 hover:bg-black/20"
           style={{ color: "#6272a4", background: "rgba(33,34,44,0.7)" }}
         >
-          Click here, press Enter or start typing to begin…
+          Clique aqui, pressione Enter ou comece a digitar para começar...
         </div>
       )}
 

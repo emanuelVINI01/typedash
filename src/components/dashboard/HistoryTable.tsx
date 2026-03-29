@@ -32,7 +32,7 @@ export function HistoryTable({ metrics }: Props) {
         <table className="w-full text-sm" style={{ background: "#21222c" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid #44475a" }}>
-              {["#", "Data", "WPM", "Acurácia", "Duração"].map((h) => (
+              {["#", "Data", "WPM", "Precisão", "Duração"].map((h) => (
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest"

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TypeDash – Typing Speed Test",
-  description: "MonkeyType-style typing speed and accuracy dashboard built with Next.js and Dracula theme.",
+  title: "TypeDash – Teste de Velocidade de Digitação",
+  description: "Painel de velocidade e precisão de digitação estilo MonkeyType construído com Next.js e tema Dracula.",
 };
 
 import { AuthProvider } from "@/src/components/auth/session-provider";
@@ -30,6 +30,10 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <title>TypeDash</title>
+        <link rel="icon" type="image/x-icon" href="/logo.png" />
+      </head>
       <body className="min-h-full flex flex-col">
         <AuthProvider>{children}</AuthProvider>
         <Footer />

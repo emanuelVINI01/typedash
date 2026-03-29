@@ -260,7 +260,10 @@ export default function TypeDashPage() {
             accuracy={liveAccuracy}
             phase={phase}
           />
-
+          <p className="text-center text-purple font-bold text-lg">
+            Seus resultados não serão salvos se você não estiver logado. 
+            <a href="/auth/login" className="text-blue-300"> Entre para salvar</a>.
+          </p>
           {/* Typing Area OR Results */}
           {phase !== "results" ? (
             <TypingArea
@@ -284,7 +287,7 @@ export default function TypeDashPage() {
           {/* Hint */}
           {phase !== "results" && (
             <p className="text-center text-xs" style={{ color: "#44475a" }}>
-              Press <kbd className="px-1.5 py-0.5 rounded" style={{ background: "#44475a", color: "#6272a4" }}>Backspace</kbd> to correct · Test resets automatically after{" "}
+              Pressione <kbd className="px-1.5 py-0.5 rounded" style={{ background: "#44475a", color: "#6272a4" }}>Backspace</kbd> para corrigir · O teste reinicia automaticamente após{" "}
               <span style={{ color: "#6272a4" }}>{TEST_DURATION}s</span>
             </p>
           )}

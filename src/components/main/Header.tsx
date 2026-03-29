@@ -12,7 +12,7 @@ export function Header() {
       <div className="flex items-center gap-2">
         <img 
           src="/logo.png" 
-          alt="TypeDash Logo" 
+          alt="Logo TypeDash" 
           className="w-8 h-8 rounded-lg shadow-lg shadow-[#bd93f9]/20" 
         />
         <a
@@ -32,7 +32,7 @@ export function Header() {
               <span className="text-sm font-medium text-white">{session.user?.name || session.user?.email}</span>
             </div>
             {session.user?.image && (
-              <img src={session.user.image} alt="User" className="w-8 h-8 rounded-full border border-purple-500" />
+              <img src={session.user.image} alt="Usuário" className="w-8 h-8 rounded-full border border-purple-500" />
             )}
             <Link
               href="/dashboard"

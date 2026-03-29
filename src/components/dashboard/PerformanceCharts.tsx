@@ -116,7 +116,7 @@ export function PerformanceCharts({ metrics }: Props) {
           domain={[0, Math.max(...wpmData.map((d) => d.value)) + 10]}
         />
         <ChartCard
-          title="Acurácia"
+          title="Precisão"
           subtitle="Percentagem de acertos"
           data={accData}
           color="#8be9fd"

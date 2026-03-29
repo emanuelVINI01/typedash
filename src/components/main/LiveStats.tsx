@@ -24,7 +24,7 @@ export function LiveStats({ timeLeft, wpm, accuracy, phase }: LiveStatsProps) {
       <div className="flex flex-col items-center gap-1">
         <div className="flex items-center gap-1.5" style={{ color: "#6272a4" }}>
           <Timer className="w-4 h-4" />
-          <span className="text-xs uppercase tracking-widest">time</span>
+          <span className="text-xs uppercase tracking-widest">tempo</span>
         </div>
         <span
           className="text-4xl font-bold tabular-nums transition-colors duration-300"
@@ -58,7 +58,7 @@ export function LiveStats({ timeLeft, wpm, accuracy, phase }: LiveStatsProps) {
       <div className="flex flex-col items-center gap-1">
         <div className="flex items-center gap-1.5" style={{ color: "#6272a4" }}>
           <Activity className="w-4 h-4" />
-          <span className="text-xs uppercase tracking-widest">acc</span>
+          <span className="text-xs uppercase tracking-widest">prec</span>
         </div>
         <span
           className="text-4xl font-bold tabular-nums"

@@ -22,7 +22,7 @@ export function RankingTable({ metrics, loading }: Props) {
     return (
       <div className="flex flex-col gap-4">
         <h2 className="text-sm font-semibold uppercase tracking-widest text-comment flex items-center gap-2">
-          <Trophy size={16} /> Global Ranking
+          <Trophy size={16} /> Ranking Global
         </h2>
         <div className="flex items-center justify-center rounded-xl border border-current-line py-12 text-sm text-comment bg-current-line/5">
           Nenhum resultado no ranking ainda. Seja o primeiro!
@@ -41,7 +41,7 @@ export function RankingTable({ metrics, loading }: Props) {
         <table className="w-full text-sm bg-current-line/5">
           <thead>
             <tr className="border-b border-current-line">
-              {["#", "Usuário", "WPM", "Acurácia", "Data"].map((h) => (
+              {["#", "Usuário", "WPM", "Precisão", "Data"].map((h) => (
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest text-comment"
