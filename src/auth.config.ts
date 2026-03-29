@@ -11,7 +11,7 @@ import type { NextAuthConfig } from "next-auth";
  */
 export const authConfig = {
   pages: {
-    signIn: "/auth/login",
+    signIn: "/login",
   },
   callbacks: {
     /**
@@ -24,7 +24,8 @@ export const authConfig = {
      */
     authorized({ auth, request: { nextUrl } }) {
       try {
-        const isLoggedIn = !!auth?.user;
+        const user = auth?.user;
+        const isLoggedIn = user != null;
         // Protect /admin — must be logged in AND have ADMIN role
         // Protege /admin — deve estar logado E ter a role ADMIN
         if (nextUrl.pathname.startsWith("/dashboard")) {
