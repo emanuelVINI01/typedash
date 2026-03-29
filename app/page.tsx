@@ -266,7 +266,7 @@ export default function TypeDashPage() {
           {!(session?.user) && (
             <p className="text-center text-purple font-bold text-lg">
               Seus resultados não serão salvos se você não estiver logado.
-              <a href="/auth/login" className="text-blue-300"> Entre para salvar</a>.
+              <a href="/login" className="text-blue-300"> Entre para salvar</a>.
             </p>)}
           {/* Typing Area OR Results */}
           {phase !== "results" ? (
