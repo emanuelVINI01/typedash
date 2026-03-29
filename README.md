@@ -33,8 +33,8 @@ O **TypeDash** é uma plataforma moderna e minimalista para testes de velocidade
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/emanuelVINI/typing-metrics.git
-   cd typing-metrics
+   git clone https://github.com/emanuelVINI01/typedash.git
+   cd typedash
    ```
 
 2. Instale as dependências:
@@ -112,4 +112,4 @@ Retorna os melhores resultados de todos os usuários.
 
 ## 📄 Licença
 
-Este projeto está sob a licença [MIT](./LICENSE). Criado por [emanuelVINI](https://github.com/emanuelVINI).
+Este projeto está sob a licença [MIT](./LICENSE). Criado por [emanuelVINI](https://github.com/emanuelVINI01).
