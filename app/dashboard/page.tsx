@@ -8,6 +8,7 @@ import { HistoryTable } from "@/src/components/dashboard/HistoryTable";
 import { PerformanceCharts } from "@/src/components/dashboard/PerformanceCharts";
 import { TypingMetric } from "@/src/types/typing";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function sortMetrics(metrics: TypingMetric[], key: SortKey): TypingMetric[] {
   const sorted = [...metrics];
@@ -37,11 +38,12 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("recent");
 
-  const { data: session } = useSession();
+  const session = useSession();
+  const router = useRouter();
 
   useEffect(() => {
-    if (!session) {
-      setError("Você precisa estar autenticado para ver seu histórico.");
+    if (session.status === "unauthenticated") {
+      router.push("/login")
       return;
     }
     async function load() {
