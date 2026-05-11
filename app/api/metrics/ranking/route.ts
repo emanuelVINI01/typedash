@@ -9,6 +9,7 @@ const querySchema = z.object({
     .min(1)
     .max(100)
     .default(10),
+  period: z.enum(["day", "week", "month", "all"]).default("all"),
 });
 
 export async function GET(request: Request) {
@@ -18,6 +19,7 @@ export async function GET(request: Request) {
     // Validar e extrair o limite da query string
     const result = querySchema.safeParse({
       limit: searchParams.get("limit") ?? undefined,
+      period: searchParams.get("period") ?? undefined,
     });
 
     if (!result.success) {
@@ -27,7 +29,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const ranking = await getMetricsRanking(result.data.limit);
+    const ranking = await getMetricsRanking(result.data.limit, result.data.period);
 
     return NextResponse.json(ranking);
   } catch (error) {

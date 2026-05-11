@@ -29,7 +29,7 @@ export default function LoginPage() {
       >
         <h1 className="text-2xl font-bold mb-2">Entrar</h1>
         <p className="text-sm text-center mb-8" style={{ color: "#6272a4" }}>
-          Faça login para salvar suas métricas e participar do ranking (em breve).
+          Faça login para salvar suas métricas e participar dos rankings.
         </p>
 
         <div className="w-full flex flex-col gap-4">

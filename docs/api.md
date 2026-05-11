@@ -48,11 +48,13 @@ Salva um novo log de telemetria e calcula as métricas finais (WPM, Accuracy).
 ## 3. Ranking
 
 ### `GET /api/metrics/ranking`
-Retorna os melhores resultados globais ordenados por WPM (descendente).
+Retorna os melhores resultados ordenados por WPM (descendente), sem repetir usuários.
 
 - **Autenticação:** Não necessária (Público).
 - **Parâmetros de Query:**
   - `limit` (opcional): Número de resultados (Padrão: 10, Máximo: 100).
+  - `period` (opcional): Período do ranking (`day`, `week`, `month`, `all`; Padrão: `all`).
+- **Critério:** Para cada usuário, a API seleciona apenas a melhor métrica dentro do período. Empates são ordenados por precisão e data.
 - **Resposta:** `TypingMetric[]` (Array de objetos de métrica).
 
 ---
@@ -89,9 +91,10 @@ type TypingMetric = {
   wpm: number;        // Words Per Minute (final)
   accuracy: number;   // Acurácia de 0 a 100 (final)
   duration: number;   // Duração total em segundos
-  logHash: string;    // Hash SHA-224 (segurança/idempotência)
+  logHash: string;    // Hash SHA-256 (segurança/idempotência)
   events: TypingEvent[]; // O log completo em formato JSON
   createdAt: string;  // Data de criação (ISO string)
   userId: string;     // ID do usuário dono (NextAuth)
+  userName: string;   // Nome exibido nos rankings
 };
 ```

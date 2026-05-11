@@ -42,6 +42,10 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
+    if (session.status === "loading") {
+      return;
+    }
+
     if (session.status === "unauthenticated") {
       router.push("/login")
       return;
@@ -66,7 +70,7 @@ export default function DashboardPage() {
       }
     }
     load();
-  }, []);
+  }, [router, session.status]);
 
   const sortedMetrics = useMemo(() => sortMetrics(metrics, sortKey), [metrics, sortKey]);
 

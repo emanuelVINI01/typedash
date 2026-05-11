@@ -7,11 +7,12 @@ import {
   useCallback,
   useMemo,
 } from "react";
+import Link from "next/link";
 import { Header } from "@/src/components/main/Header";
 import { LiveStats } from "@/src/components/main/LiveStats";
 import { TypingArea } from "@/src/components/main/TypingArea";
 import { ResultsScreen } from "@/src/components/main/ResultsScreen";
-import { Phase, CharStatus, WpmDataPoint, TypingEvent } from "@/src/types/typing";
+import type { Phase, CharStatus, WpmDataPoint, TypingEvent, TypingInputEvent } from "@/src/types/typing";
 import { RankingSection, RankingSectionHandle } from "@/src/components/main/RankingSection";
 import { useSession } from "next-auth/react";
 
@@ -30,6 +31,10 @@ export default function TypeDashPage() {
   const [cursorPos, setCursorPos] = useState(0);
   const [timeLeft, setTimeLeft] = useState(TEST_DURATION);
   const [wpmHistory, setWpmHistory] = useState<WpmDataPoint[]>([]);
+  const [liveWpm, setLiveWpm] = useState(0);
+  const [liveAccuracy, setLiveAccuracy] = useState(100);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
   const rankingRef = useRef<RankingSectionHandle>(null);
 
   const { data: session } = useSession();
@@ -45,47 +50,53 @@ export default function TypeDashPage() {
   // Array do log de telemetria
   const typingLogRef = useRef<TypingEvent[]>([]);
 
+  const resetTypingState = useCallback((nextWords: string[]) => {
+    const text = nextWords.join(" ");
+    setWords(nextWords);
+    setCharStatuses(new Array(text.length).fill("pending"));
+    setCursorPos(0);
+    setLiveWpm(0);
+    setLiveAccuracy(100);
+    setCorrectCount(0);
+    setIncorrectCount(0);
+    correctRef.current = 0;
+    incorrectRef.current = 0;
+  }, []);
+
   const fetchWords = useCallback(async () => {
     try {
       const res = await fetch("/api/words");
       const data = await res.json();
-      setWords(data);
+      resetTypingState(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to fetch words:", error);
     }
-  }, []);
+  }, [resetTypingState]);
 
   // Initial fetch
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchWords();
   }, [fetchWords]);
 
   // Flatten the text into a single string for cursor logic
   const fullText = useMemo(() => words.join(" "), [words]);
 
-  // Compute live WPM
-  const liveWpm = useMemo(() => {
-    if (phase !== "typing" || correctRef.current === 0) return 0;
-    const elapsed = (Date.now() - startTimeRef.current) / 1000 / 60;
-    if (elapsed === 0) return 0;
-    return Math.round(correctRef.current / 5 / elapsed);
-  }, [phase, cursorPos]); // cursorPos triggers recompute
+  const updateLiveStats = useCallback(() => {
+    setCorrectCount(correctRef.current);
+    setIncorrectCount(incorrectRef.current);
 
-  // Compute live accuracy
-  const liveAccuracy = useMemo(() => {
     const total = correctRef.current + incorrectRef.current;
-    if (total === 0) return 100;
-    return Math.round((correctRef.current / total) * 100);
-  }, [cursorPos]);
+    setLiveAccuracy(total === 0 ? 100 : Math.round((correctRef.current / total) * 100));
 
-  // Initialize charStatuses when words change
-  useEffect(() => {
-    const text = words.join(" ");
-    setCharStatuses(new Array(text.length).fill("pending"));
-    setCursorPos(0);
-    correctRef.current = 0;
-    incorrectRef.current = 0;
-  }, [words]);
+    if (correctRef.current === 0 || startTimeRef.current === 0) {
+      setLiveWpm(0);
+      return;
+    }
+
+    const elapsed = (Date.now() - startTimeRef.current) / 1000 / 60;
+    setLiveWpm(elapsed > 0 ? Math.round(correctRef.current / 5 / elapsed) : 0);
+  }, []);
 
   // Timer logic
   const startTimer = useCallback(() => {
@@ -102,6 +113,7 @@ export default function TypeDashPage() {
       const snap =
         elapsed > 0 ? Math.round(correctRef.current / 5 / elapsed) : 0;
       wpmHistoryRef.current.push({ second: secondRef.current, wpm: snap });
+      setLiveWpm(snap);
 
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -123,7 +135,7 @@ export default function TypeDashPage() {
   }, []);
 
   const handleKey = useCallback(
-    (e: KeyboardEvent) => {
+    (e: TypingInputEvent) => {
       if (phase === "results") return;
 
       // Ignore modifier keys
@@ -152,24 +164,27 @@ export default function TypeDashPage() {
         e.preventDefault();
         if (cursorPos === 0) return;
 
+        const previousStatus = charStatuses[cursorPos - 1];
+        if (previousStatus === "correct") {
+          correctRef.current = Math.max(0, correctRef.current - 1);
+        }
+        if (previousStatus === "incorrect") {
+          incorrectRef.current = Math.max(0, incorrectRef.current - 1);
+        }
+
         typingLogRef.current.push({
           key: "Backspace",
           time: Date.now(),
           expected: fullText[cursorPos - 1], // expected character that was there
         });
 
-        setCursorPos((prev) => {
-          const newPos = prev - 1;
-          setCharStatuses((statuses) => {
-            const updated = [...statuses];
-            const prev_status = updated[newPos];
-            if (prev_status === "correct") correctRef.current = Math.max(0, correctRef.current - 1);
-            if (prev_status === "incorrect") incorrectRef.current = Math.max(0, incorrectRef.current - 1);
-            updated[newPos] = "pending";
-            return updated;
-          });
-          return newPos;
+        setCharStatuses((statuses) => {
+          const updated = [...statuses];
+          updated[cursorPos - 1] = "pending";
+          return updated;
         });
+        setCursorPos(cursorPos - 1);
+        updateLiveStats();
         return;
       }
 
@@ -191,6 +206,7 @@ export default function TypeDashPage() {
 
       if (isCorrect) correctRef.current += 1;
       else incorrectRef.current += 1;
+      updateLiveStats();
 
       setCharStatuses((statuses) => {
         const updated = [...statuses];
@@ -208,7 +224,7 @@ export default function TypeDashPage() {
         setPhase("results"); // Alterar a fase aciona o useEffect que faz o envio POST
       }
     },
-    [phase, cursorPos, fullText, startTimer]
+    [phase, cursorPos, charStatuses, fullText, startTimer, updateLiveStats]
   );
 
   const handleReset = useCallback(() => {
@@ -217,6 +233,10 @@ export default function TypeDashPage() {
     setPhase("idle");
     setTimeLeft(TEST_DURATION);
     setWpmHistory([]);
+    setLiveWpm(0);
+    setLiveAccuracy(100);
+    setCorrectCount(0);
+    setIncorrectCount(0);
     correctRef.current = 0;
     incorrectRef.current = 0;
     secondRef.current = 0;
@@ -266,7 +286,7 @@ export default function TypeDashPage() {
           {!(session?.user) && (
             <p className="text-center text-purple font-bold text-lg">
               Seus resultados não serão salvos se você não estiver logado.
-              <a href="/login" className="text-blue-300"> Entre para salvar</a>.
+              <Link href="/login" className="text-blue-300"> Entre para salvar</Link>.
             </p>)}
           {/* Typing Area OR Results */}
           {phase !== "results" ? (
@@ -281,8 +301,8 @@ export default function TypeDashPage() {
             <ResultsScreen
               wpm={finalWpm}
               accuracy={liveAccuracy}
-              correct={correctRef.current}
-              incorrect={incorrectRef.current}
+              correct={correctCount}
+              incorrect={incorrectCount}
               wpmHistory={wpmHistory}
               onReset={handleReset}
             />

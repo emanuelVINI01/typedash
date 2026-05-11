@@ -1,43 +1,42 @@
 "use client";
 
-import { TypingMetric } from "@/src/types/typing";
-import { Trophy, Medal, User } from "lucide-react";
+import type { TypingMetric } from "@/src/types/typing";
+import { Medal, User } from "lucide-react";
 
 interface Props {
   metrics: TypingMetric[];
   loading?: boolean;
+  periodLabel: string;
 }
 
-export function RankingTable({ metrics, loading }: Props) {
+export function RankingTable({ metrics, loading, periodLabel }: Props) {
   if (loading) {
     return (
       <div className="flex flex-col gap-2">
-        <div className="h-8 w-48 bg-current-line/20 animate-pulse rounded" />
-        <div className="rounded-xl border border-current-line h-64 animate-pulse bg-current-line/10" />
+        <div className="h-10 rounded-lg border border-current-line bg-current-line/10 animate-pulse" />
+        <div className="h-64 rounded-xl border border-current-line bg-current-line/10 animate-pulse" />
       </div>
     );
   }
 
   if (metrics.length === 0) {
     return (
-      <div className="flex flex-col gap-4">
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-comment flex items-center gap-2">
-          <Trophy size={16} /> Ranking Global
-        </h2>
-        <div className="flex items-center justify-center rounded-xl border border-current-line py-12 text-sm text-comment bg-current-line/5">
-          Nenhum resultado no ranking ainda. Seja o primeiro!
-        </div>
+      <div className="flex items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 py-12 text-center text-sm text-comment">
+        Nenhum resultado no ranking de {periodLabel.toLowerCase()} ainda. Seja o primeiro.
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-sm font-semibold uppercase tracking-widest text-comment flex items-center gap-2">
-        <Trophy size={16} className="text-purple" /> Global Ranking
-      </h2>
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-4 text-xs text-comment">
+        <span className="font-semibold uppercase tracking-widest">
+          {periodLabel}
+        </span>
+        <span>{metrics.length} competidores</span>
+      </div>
 
-      <div className="overflow-x-auto rounded-xl border border-current-line shadow-xl">
+      <div className="overflow-x-auto rounded-xl border border-current-line shadow-xl shadow-black/10">
         <table className="w-full text-sm bg-current-line/5">
           <thead>
             <tr className="border-b border-current-line">
@@ -55,7 +54,6 @@ export function RankingTable({ metrics, loading }: Props) {
             {metrics.map((m, i) => {
               const isEven = i % 2 === 0;
               const date = new Date(m.createdAt).toLocaleDateString("pt-BR");
-              const isTop3 = i < 3;
 
               const wpmColor =
                 m.wpm >= 100 ? "text-green" : m.wpm >= 70 ? "text-cyan" : "text-purple";
@@ -77,8 +75,10 @@ export function RankingTable({ metrics, loading }: Props) {
                     isEven ? "bg-background/20" : "bg-transparent"
                   } hover:bg-current-line/20`}
                 >
-                  <td className="px-4 py-3 font-mono font-bold flex items-center justify-center">
-                    {rankIcon}
+                  <td className="px-4 py-3 font-mono font-bold">
+                    <div className="flex items-center justify-center">
+                      {rankIcon}
+                    </div>
                   </td>
                   <td className="px-4 py-3 font-medium text-foreground">
                     <div className="flex items-center gap-2">

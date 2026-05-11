@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useMemo } from "react";
-import { Phase, CharStatus } from "@/src/types/typing";
+import type { CharStatus, Phase, TypingInputEvent } from "@/src/types/typing";
 
 interface TypingAreaProps {
   words: string[];
   charStatuses: CharStatus[];
   cursorPos: number;
-  onKey: (e: KeyboardEvent) => void;
+  onKey: (e: TypingInputEvent) => void;
   phase: Phase;
 }
 
@@ -58,7 +58,15 @@ export function TypingArea({
     >
       {phase === "idle" && (
         <div
-          onClick={() => onKey({ key: "Click", preventDefault: () => {} } as any)}
+          onClick={() =>
+            onKey({
+              altKey: false,
+              ctrlKey: false,
+              key: "Click",
+              metaKey: false,
+              preventDefault: () => {},
+            })
+          }
           className="absolute inset-0 flex items-center justify-center rounded-2xl text-sm tracking-widest uppercase z-10 cursor-pointer transition-all duration-300 hover:bg-black/20"
           style={{ color: "#6272a4", background: "rgba(33,34,44,0.7)" }}
         >

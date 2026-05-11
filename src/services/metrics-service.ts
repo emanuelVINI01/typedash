@@ -1,4 +1,5 @@
-import { TypingEvent } from "../types/typing";
+import { Prisma, type TypingMetric as PrismaTypingMetric } from "@/prisma/generated/client";
+import type { RankingPeriod, TypingEvent } from "../types/typing";
 import { prisma } from "@/src/prisma";
 import crypto from "crypto";
 
@@ -90,7 +91,7 @@ export function prepareMetric(userId: string, userName: string, metrics: TypingE
     duration,
     logHash,
     userName,
-    events: metrics as any, // Prisma Json field
+    events: metrics as unknown as Prisma.InputJsonValue,
   };
 }
 
@@ -102,13 +103,49 @@ export async function saveMetric(userId: string, userName: string, metrics: Typi
     data,
   });
 }
-export async function getMetricsRanking(limit: number) {
-  return (await prisma.typingMetric.findMany({
-    orderBy: {
-      wpm: "desc",
-    },
-    take: limit,
-  }))
+
+function getRankingStartDate(period: RankingPeriod) {
+  if (period === "all") return null;
+
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+
+  if (period === "week") {
+    const weekday = start.getDay();
+    const daysSinceMonday = weekday === 0 ? 6 : weekday - 1;
+    start.setDate(start.getDate() - daysSinceMonday);
+  }
+
+  if (period === "month") {
+    start.setDate(1);
+  }
+
+  return start;
+}
+
+export async function getMetricsRanking(limit: number, period: RankingPeriod = "all") {
+  const startDate = getRankingStartDate(period);
+
+  return await prisma.$queryRaw<PrismaTypingMetric[]>`
+    SELECT *
+    FROM (
+      SELECT DISTINCT ON ("userId")
+        "id",
+        "wpm",
+        "accuracy",
+        "duration",
+        "events",
+        "logHash",
+        "createdAt",
+        "userName",
+        "userId"
+      FROM "TypingMetric"
+      ${startDate ? Prisma.sql`WHERE "createdAt" >= ${startDate}` : Prisma.empty}
+      ORDER BY "userId", "wpm" DESC, "accuracy" DESC, "createdAt" ASC
+    ) AS best_by_user
+    ORDER BY "wpm" DESC, "accuracy" DESC, "createdAt" ASC
+    LIMIT ${limit}
+  `;
 }
 
 export async function getUserMetrics(userId: string, limit: number) {

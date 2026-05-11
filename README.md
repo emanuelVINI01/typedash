@@ -7,13 +7,13 @@ O **TypeDash** é uma plataforma moderna e minimalista para testes de velocidade
 - **Teste de Digitação:** Interface responsiva com cálculo progressivo de WPM e precisão.
 - **Gráficos de Performance:** Visualização detalhada do desempenho durante o teste (via Recharts).
 - **Dashboard Pessoal:** Histórico completo de testes realizados pelo usuário autenticado.
-- **Ranking Global:** Tabela de classificação em tempo real com os melhores resultados da comunidade.
+- **Rankings por Período:** Classificação diária, semanal, mensal e geral com apenas a melhor marca de cada usuário.
 - **Autenticação:** Login seguro via GitHub utilizando Auth.js (NextAuth v5).
 - **Tema Dracula:** Design premium e confortável para longas sessões de uso.
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Core:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Core:** [Next.js 16](https://nextjs.org/) (App Router)
 - **Estilização:** [Tailwind CSS](https://tailwindcss.com/)
 - **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/) com [Prisma ORM](https://www.prisma.io/)
 - **Autenticação:** [NextAuth.js v5 (Beta)](https://authjs.dev/)
@@ -100,13 +100,15 @@ Retorna o histórico de testes do usuário conectado. Requer autenticação.
 - **Parâmetros de Query:** `limit` (padrão: 10, máx: 100)
 - **Resposta:** Lista de objetos contendo WPM, precisão, duração e data.
 
-### 4. Ranking Global
-Retorna os melhores resultados de todos os usuários.
+### 4. Ranking
+Retorna os melhores resultados por período, sem repetir a mesma pessoa.
 
 - **URL:** `/api/metrics/ranking`
 - **Método:** `GET`
-- **Parâmetros de Query:** `limit` (padrão: 10, máx: 100)
-- **Resposta:** Lista de métricas ordenadas por WPM (descendente).
+- **Parâmetros de Query:**
+  - `limit` (padrão: 10, máx: 100)
+  - `period` (`day`, `week`, `month`, `all`; padrão: `all`)
+- **Resposta:** Lista de métricas ordenadas por WPM (descendente), usando somente a melhor métrica de cada usuário dentro do período.
 
 ---
 
