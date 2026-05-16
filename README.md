@@ -10,7 +10,7 @@ Plataforma de treino de digitação com métricas de WPM, precisão e histórico
 
 ## Stack identificada
 
-JavaScript, KSP, MongoDB, Next.js, NextAuth/Auth.js, Node.js, Prisma, React, Recharts, Tailwind CSS, Transactions, TypeScript, Zod
+JavaScript, MongoDB, Next.js, NextAuth/Auth.js, Node.js, Prisma, React, Recharts, Tailwind CSS, Transactions, TypeScript, Zod
 
 ## Decisões de engenharia
 
