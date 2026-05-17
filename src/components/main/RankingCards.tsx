@@ -40,67 +40,55 @@ export function RankingCards({ metrics, loading, periodLabel }: Props) {
         <span>{t.common.top} {metrics.length}</span>
       </div>
 
-      <div className="hidden grid-cols-5 gap-2 sm:grid">
+      <div
+        className="hidden w-full overflow-hidden rounded-xl border border-current-line bg-background/35 sm:grid"
+        style={{ gridTemplateColumns: `repeat(${metrics.length}, minmax(0, 1fr))` }}
+      >
         {metrics.map((metric, index) => {
           const date = formatRankingDate(language, metric.createdAt);
           const wpmColor = getRankingWpmColorClass(metric.wpm);
+          const isLast = index === metrics.length - 1;
 
           return (
             <article
               key={metric.id}
-              className="flex min-h-48 min-w-0 flex-col rounded-xl border border-current-line bg-background/35 p-3"
+              className={`flex w-full flex-col gap-2 p-2.5 ${!isLast ? "border-r border-current-line" : ""}`}
             >
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-current-line bg-current-line/20">
-                  <RankingIndicator index={index} />
-                </div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-comment">
-                  {t.ranking.cardLabels.rank}
-                </span>
+              {/* Header: medalha + ícone user + nome */}
+              <div className="flex min-w-0 items-center gap-1.5">
+                <RankingIndicator index={index} />
+                <User size={11} className="shrink-0 text-comment/60" />
+                <p className="min-w-0 truncate text-xs font-semibold text-foreground">
+                  {metric.userName}
+                </p>
               </div>
 
-              <div className="mt-4 flex min-w-0 items-center gap-2">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-current-line/25 text-comment">
-                  <User size={14} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-comment">
-                    {t.ranking.cardLabels.user}
-                  </p>
-                  <p className="truncate text-sm font-semibold text-foreground">
-                    {metric.userName}
-                  </p>
-                </div>
-              </div>
+              {/* Separador */}
+              <div className="h-px w-full bg-current-line/40" />
 
-              <div className="mt-4 grid gap-3">
+              {/* WPM + Precisão em row */}
+              <div className="grid grid-cols-2 gap-1">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-comment">
+                  <p className="text-[9px] font-semibold uppercase tracking-widest text-comment">
                     WPM
                   </p>
-                  <p className={`font-mono text-xl font-bold ${wpmColor}`}>
+                  <p className={`font-mono text-base font-bold leading-tight ${wpmColor}`}>
                     {metric.wpm}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-comment">
+                  <p className="text-[9px] font-semibold uppercase tracking-widest text-comment">
                     {t.ranking.cardLabels.accuracy}
                   </p>
-                  <p className="font-mono text-sm font-semibold text-foreground">
+                  <p className="font-mono text-sm font-semibold leading-tight text-foreground">
                     {metric.accuracy.toFixed(1)}%
                   </p>
                 </div>
-
-                <div className="mt-auto">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-comment">
-                    {t.ranking.cardLabels.date}
-                  </p>
-                  <p className="text-xs text-comment">
-                    {date}
-                  </p>
-                </div>
               </div>
+
+              {/* Data */}
+              <p className="text-[9px] text-comment/70">{date}</p>
             </article>
           );
         })}

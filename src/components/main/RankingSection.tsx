@@ -35,7 +35,7 @@ export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionPro
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      className={`${compact ? "mt-0 max-w-none" : "mt-16 max-w-4xl"} w-full min-w-0`}
+      className={`${compact ? "mt-0" : ""} w-full min-w-0`}
     >
       <div className="flex flex-col gap-5">
         <div className={`${compact ? "flex-col" : "flex-col md:flex-row md:items-end md:justify-between"} flex gap-4`}>
@@ -68,11 +68,10 @@ export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionPro
                   aria-selected={isActive}
                   title={item.description}
                   onClick={() => setPeriod(item.value)}
-                  className={`${compact ? "px-2" : "px-3 sm:min-w-20"} min-w-0 rounded-md py-2 text-sm font-semibold transition-colors ${
-                    isActive
-                      ? "bg-purple text-background"
-                      : "text-comment hover:bg-current-line/40 hover:text-foreground"
-                  }`}
+                  className={`${compact ? "px-2" : "px-3 sm:min-w-20"} min-w-0 rounded-md py-2 text-sm font-semibold transition-colors ${isActive
+                    ? "bg-purple text-background"
+                    : "text-comment hover:bg-current-line/40 hover:text-foreground"
+                    }`}
                 >
                   {item.label}
                 </button>
