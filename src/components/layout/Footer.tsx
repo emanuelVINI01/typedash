@@ -1,17 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import { ExternalLink, Keyboard, ShieldCheck, Sparkles } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import packageJson from "@/package.json";
-
-const footerLinks = [
-  { label: "Test", href: "/" },
-  { label: "Practice", href: "/practice" },
-  { label: "Ranking", href: "/ranking" },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "About", href: "/about" },
-];
+import { useLanguage } from "@/src/context/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
+
+  const footerLinks = [
+    { label: t.common.test, href: "/" },
+    { label: t.common.practice, href: "/practice" },
+    { label: t.common.ranking, href: "/ranking" },
+    { label: t.common.dashboard, href: "/dashboard" },
+    { label: t.common.about, href: "/about" },
+  ];
+
   return (
     <footer className="relative z-10 w-full border-t border-current-line/70 bg-background text-comment">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-32 pt-10 sm:gap-10 sm:px-6 md:py-12">
@@ -24,14 +29,14 @@ export default function Footer() {
               <span className="font-semibold tracking-tight">TypeDash</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed">
-              Mobile-first typing performance lab with WPM telemetry, personal history, rankings, practice resources and a Dracula developer interface.
+              {t.footer.description}
             </p>
           </div>
 
           <div>
             <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-foreground">
               <Sparkles className="h-3.5 w-3.5 text-cyan" />
-              Navigation
+              {t.common.navigation}
             </div>
             <div className="grid gap-2 text-sm">
               {footerLinks.map((link) => (
@@ -45,7 +50,7 @@ export default function Footer() {
           <div>
             <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-green" />
-              Project
+              {t.common.project}
             </div>
             <div className="grid gap-3 text-sm">
               <a
@@ -55,17 +60,17 @@ export default function Footer() {
                 className="inline-flex w-fit items-center gap-2 rounded-lg border border-cyan/20 bg-cyan/10 px-3 py-2 text-foreground transition-colors hover:border-cyan/50 hover:text-cyan"
               >
                 <FaGithub className="h-4 w-4" />
-                Repository
+                {t.common.repository}
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
-              <span>Version {packageJson.version}</span>
+              <span>{t.common.version} {packageJson.version}</span>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-3 border-t border-current-line/50 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} TypeDash. Open-source typing analytics project.</p>
-          <p className="text-comment/80">Next.js + Auth.js + Recharts + Framer Motion</p>
+          <p>&copy; {new Date().getFullYear()} TypeDash. {t.footer.projectDescription}</p>
+          <p className="text-comment/80">{t.footer.bottomNote}</p>
         </div>
       </div>
     </footer>

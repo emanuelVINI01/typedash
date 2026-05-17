@@ -3,6 +3,7 @@
 import { useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import type { CharStatus, Phase, TypingInputEvent } from "@/src/types/typing";
+import { useLanguage } from "@/src/context/LanguageContext";
 
 interface TypingAreaProps {
   words: string[];
@@ -20,6 +21,7 @@ export function TypingArea({
   phase,
 }: TypingAreaProps) {
   const inputRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   // Focus on mount / phase change
   useEffect(() => {
@@ -57,7 +59,7 @@ export function TypingArea({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.32, ease: "easeOut" }}
       className="relative cursor-text select-none overflow-hidden rounded-2xl border border-current-line/80 bg-[#21222c] p-4 outline-none shadow-2xl shadow-black/20 sm:p-6"
-      aria-label="Typing area – start typing to begin the test"
+      aria-label={t.typingArea.ariaLabel}
     >
       {phase === "idle" && (
         <div
@@ -72,7 +74,7 @@ export function TypingArea({
           }
           className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-2xl bg-[#21222c]/80 px-5 text-center text-xs uppercase tracking-widest text-comment backdrop-blur-sm transition-all duration-300 hover:bg-black/20 sm:text-sm"
         >
-          Tap here or start typing to begin
+          {t.typingArea.overlay}
         </div>
       )}
 

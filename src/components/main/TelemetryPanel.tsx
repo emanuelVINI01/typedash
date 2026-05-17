@@ -9,6 +9,7 @@ import {
   RankingSection,
   type RankingSectionHandle,
 } from "@/src/components/main/RankingSection";
+import { useLanguage } from "@/src/context/LanguageContext";
 
 interface TelemetryPanelProps {
   duration: number;
@@ -17,6 +18,7 @@ interface TelemetryPanelProps {
 
 export function TelemetryPanel({ duration, rankingRef }: TelemetryPanelProps) {
   const { data: session } = useSession();
+  const { t } = useLanguage();
 
   return (
     <motion.div
@@ -28,9 +30,9 @@ export function TelemetryPanel({ duration, rankingRef }: TelemetryPanelProps) {
       <div className="flex flex-col gap-3">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {[
-            { icon: Target, label: "Duration", value: `${duration}s`, color: "text-cyan" },
-            { icon: BarChart3, label: "Telemetry", value: "live", color: "text-green" },
-            { icon: Trophy, label: "Ranking", value: "global", color: "text-purple" },
+            { icon: Target, label: t.telemetry.duration, value: `${duration}s`, color: "text-cyan" },
+            { icon: BarChart3, label: t.telemetry.telemetry, value: t.telemetry.live, color: "text-green" },
+            { icon: Trophy, label: t.telemetry.ranking, value: t.telemetry.global, color: "text-purple" },
           ].map(({ icon: Icon, label, value, color }) => (
             <div key={label} className="min-w-0 rounded-xl border border-current-line bg-background/35 p-4">
               <Icon className={`h-5 w-5 ${color}`} />
@@ -47,13 +49,13 @@ export function TelemetryPanel({ duration, rankingRef }: TelemetryPanelProps) {
             className="rounded-xl border border-purple/25 bg-purple/10 px-4 py-3 text-sm leading-6 text-comment"
           >
             <ShieldCheck className="mr-2 inline h-4 w-4 text-purple" />
-            Results are only saved when you are logged in.
-            <Link href="/login" className="ml-1 font-semibold text-cyan">Login to save progress</Link>.
+            {t.telemetry.loginNotice}
+            <Link href="/login" className="ml-1 font-semibold text-cyan">{t.telemetry.loginCta}</Link>.
           </motion.div>
         )}
       </div>
 
-      <RankingSection ref={rankingRef} compact />
+      <RankingSection ref={rankingRef} compact display="cards" limit={5} />
     </motion.div>
   );
 }

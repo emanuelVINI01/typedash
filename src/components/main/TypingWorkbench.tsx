@@ -15,7 +15,6 @@ interface TypingWorkbenchProps {
   charStatuses: CharStatus[];
   correctCount: number;
   cursorPos: number;
-  duration: number;
   finalWpm: number;
   incorrectCount: number;
   onKey: (event: TypingInputEvent) => void;
@@ -32,7 +31,6 @@ export function TypingWorkbench({
   charStatuses,
   correctCount,
   cursorPos,
-  duration,
   finalWpm,
   incorrectCount,
   onKey,

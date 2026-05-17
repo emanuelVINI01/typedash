@@ -2,14 +2,23 @@
 
 import { useState } from "react";
 import { TypingMetric } from "@/src/types/typing";
+import { useLanguage } from "@/src/context/LanguageContext";
+import {
+  formatDashboardMetricDate,
+  getHistoryAccuracyColor,
+  getHistoryWpmColor,
+} from "@/src/utils/dashboard";
 
 interface Props {
   metrics: TypingMetric[];
 }
 
 const PAGE_SIZE = 10;
+const HOVERED_ROW_CLASS_NAME = "hover:bg-[#44475a33]";
+const PRIMARY_BUTTON_CLASS_NAME = "cursor-pointer self-center rounded-lg border px-6 py-2 text-sm font-semibold transition-all duration-200";
 
 export function HistoryTable({ metrics }: Props) {
+  const { language, t } = useLanguage();
   const [visible, setVisible] = useState(PAGE_SIZE);
 
   const shown = metrics.slice(0, visible);
@@ -21,7 +30,7 @@ export function HistoryTable({ metrics }: Props) {
         className="flex items-center justify-center rounded-xl border py-12 text-sm"
         style={{ background: "#21222c", borderColor: "#44475a", color: "#6272a4" }}
       >
-        No tests found. Complete a test to see your history.
+        {t.dashboardPage.emptyHistory}
       </div>
     );
   }
@@ -32,7 +41,7 @@ export function HistoryTable({ metrics }: Props) {
         <table className="w-full min-w-[560px] text-sm" style={{ background: "#21222c" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid #44475a" }}>
-              {["#", "Date", "WPM", "Accuracy", "Duration"].map((h) => (
+              {["#", t.common.date, "WPM", t.common.accuracy, t.common.duration].map((h) => (
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest"
@@ -45,38 +54,17 @@ export function HistoryTable({ metrics }: Props) {
           </thead>
           <tbody>
             {shown.map((m, i) => {
-              const isEven = i % 2 === 0;
-              const date = new Date(m.createdAt).toLocaleString("pt-BR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-
-              const wpmColor =
-                m.wpm >= 80 ? "#50fa7b" : m.wpm >= 50 ? "#f1fa8c" : "#ff5555";
-              const accColor =
-                m.accuracy >= 95
-                  ? "#50fa7b"
-                  : m.accuracy >= 80
-                  ? "#f1fa8c"
-                  : "#ff5555";
+              const date = formatDashboardMetricDate(language, m.createdAt);
+              const wpmColor = getHistoryWpmColor(m.wpm);
+              const accColor = getHistoryAccuracyColor(m.accuracy);
+              const rowBackgroundClassName = i % 2 === 0 ? "bg-[#21222c]" : "bg-[#282a36]";
 
               return (
                 <tr
                   key={m.id}
-                  className="transition-colors duration-150"
+                  className={`${rowBackgroundClassName} ${HOVERED_ROW_CLASS_NAME} transition-colors duration-150`}
                   style={{
-                    background: isEven ? "#21222c" : "#282a36",
                     borderBottom: "1px solid #44475a22",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLTableRowElement).style.background = "#44475a33";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLTableRowElement).style.background =
-                      isEven ? "#21222c" : "#282a36";
                   }}
                 >
                   <td className="px-4 py-3 font-mono" style={{ color: "#6272a4" }}>
@@ -104,22 +92,14 @@ export function HistoryTable({ metrics }: Props) {
       {hasMore && (
         <button
           onClick={() => setVisible((v) => v + PAGE_SIZE)}
-          className="self-center px-6 py-2 rounded-lg text-sm font-semibold border transition-all duration-200 cursor-pointer"
+          className={`${PRIMARY_BUTTON_CLASS_NAME} hover:border-[#bd93f9] hover:text-[#bd93f9]`}
           style={{
             background: "transparent",
             borderColor: "#44475a",
             color: "#6272a4",
           }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "#bd93f9";
-            (e.currentTarget as HTMLButtonElement).style.color = "#bd93f9";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "#44475a";
-            (e.currentTarget as HTMLButtonElement).style.color = "#6272a4";
-          }}
         >
-          Show more ({metrics.length - visible} remaining)
+          {t.common.showMore} ({metrics.length - visible} {t.common.remaining})
         </button>
       )}
     </div>

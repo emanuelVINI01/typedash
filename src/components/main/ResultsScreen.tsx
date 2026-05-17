@@ -12,6 +12,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { WpmDataPoint } from "@/src/types/typing";
+import { useLanguage } from "@/src/context/LanguageContext";
+import { ResultStatCard } from "@/src/components/main/results/ResultStatCard";
+import { ResultsChartTooltip } from "@/src/components/main/results/ResultsChartTooltip";
 
 interface ResultsScreenProps {
   wpm: number;
@@ -22,63 +25,6 @@ interface ResultsScreenProps {
   onReset: () => void;
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-  color,
-  large,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  color: string;
-  large?: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="stat-card flex h-28 flex-col items-center justify-center gap-1.5 rounded-2xl border border-current-line/70 p-3 sm:h-32 sm:p-4 lg:h-[6.75rem]"
-      style={{ background: "#21222c" }}
-    >
-      <div style={{ color }}>{icon}</div>
-      <span className="text-[10px] uppercase tracking-widest sm:text-xs" style={{ color: "#6272a4" }}>
-        {label}
-      </span>
-      <span
-        className={`font-bold tabular-nums ${large ? "text-4xl sm:text-5xl lg:text-4xl" : "text-2xl sm:text-3xl"}`}
-        style={{ color }}
-      >
-        {value}
-      </span>
-    </motion.div>
-  );
-}
-
-const CustomTooltip = ({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: { value: number }[];
-  label?: number;
-}) => {
-  if (active && payload && payload.length) {
-    return (
-      <div
-        className="rounded-lg px-3 py-2 text-sm"
-        style={{ background: "#44475a", color: "#f8f8f2" }}
-      >
-        <p style={{ color: "#6272a4" }}>{`${label}s`}</p>
-        <p style={{ color: "#bd93f9" }}>{`${payload[0].value} WPM`}</p>
-      </div>
-    );
-  }
-  return null;
-};
-
 export function ResultsScreen({
   wpm,
   accuracy,
@@ -87,31 +33,33 @@ export function ResultsScreen({
   wpmHistory,
   onReset,
 }: ResultsScreenProps) {
+  const { t } = useLanguage();
+
   return (
     <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="grid w-full gap-4 lg:grid-cols-[9rem_1fr]">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-1">
-        <StatCard
+        <ResultStatCard
           icon={<Trophy className="h-7 w-7" />}
           label="WPM"
           value={wpm}
           color="#bd93f9"
           large
         />
-        <StatCard
+        <ResultStatCard
           icon={<Activity className="h-5 w-5" />}
-          label="Precisão"
+          label={t.results.accuracy}
           value={`${accuracy}%`}
           color="#50fa7b"
         />
-        <StatCard
+        <ResultStatCard
           icon={<CheckCircle2 className="h-5 w-5" />}
-          label="Acertos"
+          label={t.results.correct}
           value={correct}
           color="#50fa7b"
         />
-        <StatCard
+        <ResultStatCard
           icon={<XCircle className="h-5 w-5" />}
-          label="Erros"
+          label={t.results.incorrect}
           value={incorrect}
           color="#ff5555"
         />
@@ -129,7 +77,7 @@ export function ResultsScreen({
           className="text-xs uppercase tracking-widest mb-4"
           style={{ color: "#6272a4" }}
         >
-          WPM ao longo do tempo
+          {t.results.chartTitle}
         </p>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={wpmHistory} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
@@ -140,7 +88,7 @@ export function ResultsScreen({
               tickFormatter={(v) => `${v}s`}
             />
             <YAxis tick={{ fill: "#6272a4", fontSize: 11 }} />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip content={<ResultsChartTooltip />} />
             <Line
               type="monotone"
               dataKey="wpm"
@@ -159,7 +107,7 @@ export function ResultsScreen({
             style={{ background: "#bd93f9", color: "#282a36" }}
           >
             <RotateCcw className="w-4 h-4" />
-            Tentar Novamente
+            {t.results.retry}
           </button>
         </div>
       </motion.div>

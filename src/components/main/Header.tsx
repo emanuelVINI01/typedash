@@ -16,20 +16,23 @@ import {
   LogOut,
   Trophy,
 } from "lucide-react";
+import { LanguageToggle } from "@/src/components/main/LanguageToggle";
+import { useLanguage } from "@/src/context/LanguageContext";
 
 export function Header() {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const { t } = useLanguage();
 
   const navItems = useMemo(
     () => [
-      { href: "/", label: "Test", icon: Home },
-      { href: "/practice", label: "Practice", icon: Dumbbell },
-      { href: "/ranking", label: "Ranking", icon: Trophy },
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/about", label: "About", icon: Info },
+      { href: "/", label: t.common.test, icon: Home },
+      { href: "/practice", label: t.common.practice, icon: Dumbbell },
+      { href: "/ranking", label: t.common.ranking, icon: Trophy },
+      { href: "/dashboard", label: t.common.dashboard, icon: LayoutDashboard },
+      { href: "/about", label: t.common.about, icon: Info },
     ],
-    [],
+    [t],
   );
 
   return (
@@ -45,7 +48,7 @@ export function Header() {
             <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-purple/40 bg-purple/10 shadow-[0_0_20px_rgba(189,147,249,0.18)] transition-colors group-hover:border-cyan/50">
               <Image
                 src="/logo.png"
-                alt="TypeDash logo"
+                alt={t.header.logoAlt}
                 width={36}
                 height={36}
                 className="h-full w-full object-cover"
@@ -54,7 +57,7 @@ export function Header() {
             </span>
             <span className="min-w-0 truncate text-sm font-semibold tracking-tight text-foreground">
               TypeDash
-              <span className="hidden text-comment sm:inline"> / WPM lab</span>
+              <span className="hidden text-comment sm:inline"> / {t.header.brandSuffix}</span>
             </span>
           </Link>
 
@@ -85,8 +88,9 @@ export function Header() {
 
           {session ? (
             <div className="flex items-center gap-2">
+              <LanguageToggle />
               <div className="hidden max-w-[190px] flex-col items-end md:flex">
-                <span className="text-[10px] uppercase tracking-widest text-comment">Logged in</span>
+                <span className="text-[10px] uppercase tracking-widest text-comment">{t.common.loggedIn}</span>
                 <span className="truncate text-sm font-medium text-foreground">
                   {session.user?.name || session.user?.email}
                 </span>
@@ -94,7 +98,7 @@ export function Header() {
               {session.user?.image ? (
                 <Image
                   src={session.user.image}
-                  alt="User"
+                  alt={t.header.userAvatarAlt}
                   width={32}
                   height={32}
                   unoptimized
@@ -110,17 +114,20 @@ export function Header() {
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-red/20 bg-red/10 px-2.5 text-xs font-semibold uppercase tracking-widest text-red transition-colors hover:border-red/50 sm:px-3"
               >
                 <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Logout</span>
+                <span className="hidden sm:inline">{t.common.logout}</span>
               </button>
             </div>
           ) : (
-            <Link
-              href="/login"
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-purple/30 bg-purple px-3 text-xs font-semibold uppercase tracking-widest text-background shadow-lg shadow-purple/20 transition-transform hover:-translate-y-0.5"
-            >
-              <LogIn className="h-3.5 w-3.5" />
-              <span>Login</span>
-            </Link>
+            <div className="flex items-center gap-2">
+              <LanguageToggle />
+              <Link
+                href="/login"
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-purple/30 bg-purple px-3 text-xs font-semibold uppercase tracking-widest text-background shadow-lg shadow-purple/20 transition-transform hover:-translate-y-0.5"
+              >
+                <LogIn className="h-3.5 w-3.5" />
+                <span>{t.common.login}</span>
+              </Link>
+            </div>
           )}
         </div>
       </motion.header>

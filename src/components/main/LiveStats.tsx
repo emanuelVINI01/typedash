@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Activity, Timer, Zap } from "lucide-react";
 import { Phase } from "@/src/types/typing";
+import { useLanguage } from "@/src/context/LanguageContext";
 
 interface LiveStatsProps {
   timeLeft: number;
@@ -12,6 +13,7 @@ interface LiveStatsProps {
 }
 
 export function LiveStats({ timeLeft, wpm, accuracy, phase }: LiveStatsProps) {
+  const { t } = useLanguage();
   const timerColor =
     timeLeft <= 5
       ? "text-red"
@@ -20,9 +22,9 @@ export function LiveStats({ timeLeft, wpm, accuracy, phase }: LiveStatsProps) {
       : "text-cyan";
 
   const cards = [
-    { icon: Timer, label: "time", value: timeLeft, color: timerColor },
-    { icon: Zap, label: "wpm", value: wpm, color: phase === "idle" ? "text-comment" : "text-purple" },
-    { icon: Activity, label: "accuracy", value: `${accuracy}%`, color: phase === "idle" ? "text-comment" : "text-green" },
+    { icon: Timer, label: t.liveStats.time, value: timeLeft, color: timerColor },
+    { icon: Zap, label: t.liveStats.wpm, value: wpm, color: phase === "idle" ? "text-comment" : "text-purple" },
+    { icon: Activity, label: t.liveStats.accuracy, value: `${accuracy}%`, color: phase === "idle" ? "text-comment" : "text-green" },
   ];
 
   return (

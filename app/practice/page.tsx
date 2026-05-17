@@ -4,31 +4,18 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Brain, Gauge, Keyboard, Repeat2, Timer, WandSparkles } from "lucide-react";
 import { Header } from "@/src/components/main/Header";
-
-const drills = [
-  {
-    icon: Timer,
-    title: "30-second sprint",
-    text: "Run three short tests and keep the best score. Short loops make mobile practice less tiring.",
-  },
-  {
-    icon: Repeat2,
-    title: "Correction discipline",
-    text: "Use Backspace only when needed. The metric model rewards speed, but accuracy keeps progress honest.",
-  },
-  {
-    icon: Brain,
-    title: "Pattern focus",
-    text: "Watch repeated mistakes, then run a slower session to retrain the pattern before pushing WPM.",
-  },
-  {
-    icon: Gauge,
-    title: "Consistency check",
-    text: "A strong dashboard trend matters more than a single lucky score.",
-  },
-];
+import { useLanguage } from "@/src/context/LanguageContext";
 
 export default function PracticePage() {
+  const { t } = useLanguage();
+
+  const drills = [
+    { icon: Timer, ...t.practicePage.drills[0] },
+    { icon: Repeat2, ...t.practicePage.drills[1] },
+    { icon: Brain, ...t.practicePage.drills[2] },
+    { icon: Gauge, ...t.practicePage.drills[3] },
+  ];
+
   return (
     <div className="min-h-screen bg-background pb-24 text-foreground lg:pb-0">
       <Header />
@@ -37,17 +24,17 @@ export default function PracticePage() {
           <div>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan/25 bg-cyan/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-cyan sm:text-xs">
               <WandSparkles className="h-3.5 w-3.5" />
-              Practice resources
+              {t.practicePage.badge}
             </div>
             <h1 className="max-w-3xl text-3xl font-semibold leading-[1.08] text-foreground sm:text-5xl">
-              A small training system for cleaner WPM gains.
+              {t.practicePage.title}
             </h1>
             <p className="mt-5 max-w-2xl text-sm leading-7 text-comment sm:text-base">
-              TypeDash is not only a stopwatch. Use these drills to turn raw typing tests into repeatable practice.
+              {t.practicePage.subtitle}
             </p>
           </div>
           <Link href="/" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-cyan px-5 text-sm font-semibold text-background shadow-lg shadow-cyan/20">
-            Open test
+            {t.practicePage.openTest}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.section>
@@ -73,9 +60,9 @@ export default function PracticePage() {
           <div className="grid gap-5 md:grid-cols-[auto_1fr] md:items-center">
             <Keyboard className="h-8 w-8 text-green" />
             <div>
-              <h2 className="text-xl font-semibold text-foreground">Recommended loop</h2>
+              <h2 className="text-xl font-semibold text-foreground">{t.practicePage.recommendedTitle}</h2>
               <p className="mt-2 text-sm leading-6 text-comment">
-                Warm up with one slow accurate run, complete three timed tests, then review the dashboard before changing speed goals.
+                {t.practicePage.recommendedText}
               </p>
             </div>
           </div>

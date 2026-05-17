@@ -2,74 +2,41 @@
 
 import { TypingMetric } from "@/src/types/typing";
 import { Zap, Target, Clock, BarChart2 } from "lucide-react";
+import { DashboardStatCard } from "@/src/components/dashboard/DashboardStatCard";
+import { useLanguage } from "@/src/context/LanguageContext";
+import { getDashboardStats } from "@/src/utils/dashboard";
 
 interface Props {
   metrics: TypingMetric[];
 }
 
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  color: string;
-}
-
-function StatCard({ icon, label, value, color }: StatCardProps) {
-  return (
-    <div
-      className="stat-card flex flex-col gap-3 rounded-xl p-5 border"
-      style={{
-        background: "#21222c",
-        borderColor: "#44475a",
-      }}
-    >
-      <div className="flex items-center gap-2" style={{ color }}>
-        {icon}
-        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#6272a4" }}>
-          {label}
-        </span>
-      </div>
-      <span className="text-3xl font-bold font-mono" style={{ color }}>
-        {value}
-      </span>
-    </div>
-  );
-}
-
 export function StatsOverview({ metrics }: Props) {
-  const total = metrics.length;
+  const { t } = useLanguage();
+  const stats = getDashboardStats(metrics);
 
-  const bestWpm = total > 0 ? Math.max(...metrics.map((m) => m.wpm)) : 0;
-  const avgWpm =
-    total > 0 ? Math.round(metrics.reduce((s, m) => s + m.wpm, 0) / total) : 0;
-  const avgAccuracy =
-    total > 0
-      ? Math.round(metrics.reduce((s, m) => s + m.accuracy, 0) / total)
-      : 0;
-
-  const cards: StatCardProps[] = [
+  const cards = [
     {
       icon: <Zap size={16} />,
-      label: "Best WPM",
-      value: `${bestWpm}`,
+      label: t.dashboardPage.stats.bestWpm,
+      value: `${stats.bestWpm}`,
       color: "#bd93f9",
     },
     {
       icon: <BarChart2 size={16} />,
-      label: "Average WPM",
-      value: `${avgWpm}`,
+      label: t.dashboardPage.stats.averageWpm,
+      value: `${stats.averageWpm}`,
       color: "#ff79c6",
     },
     {
       icon: <Target size={16} />,
-      label: "Average Accuracy",
-      value: `${avgAccuracy}%`,
+      label: t.dashboardPage.stats.averageAccuracy,
+      value: `${stats.averageAccuracy}%`,
       color: "#50fa7b",
     },
     {
       icon: <Clock size={16} />,
-      label: "Completed Tests",
-      value: `${total}`,
+      label: t.dashboardPage.stats.completedTests,
+      value: `${stats.completedTests}`,
       color: "#8be9fd",
     },
   ];
@@ -77,7 +44,7 @@ export function StatsOverview({ metrics }: Props) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card) => (
-        <StatCard key={card.label} {...card} />
+        <DashboardStatCard key={card.label} {...card} />
       ))}
     </div>
   );

@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback, useImperativeHandle, forwardRef } from "react";
+import { useImperativeHandle, forwardRef } from "react";
 import { motion } from "framer-motion";
-import type { RankingPeriod, TypingMetric } from "@/src/types/typing";
 import { RankingTable } from "./RankingTable";
+import { RankingCards } from "./RankingCards";
 import { Trophy } from "lucide-react";
+import { useLanguage } from "@/src/context/LanguageContext";
+import { useRankingMetrics } from "@/src/hooks/useRankingMetrics";
 
 export interface RankingSectionHandle {
   refresh: () => void;
@@ -12,41 +14,20 @@ export interface RankingSectionHandle {
 
 interface RankingSectionProps {
   compact?: boolean;
+  display?: "cards" | "table";
+  limit?: number;
 }
 
-const periods: { value: RankingPeriod; label: string; description: string }[] = [
-  { value: "day", label: "Today", description: "Daily ranking" },
-  { value: "week", label: "Week", description: "Weekly ranking" },
-  { value: "month", label: "Month", description: "Monthly ranking" },
-  { value: "all", label: "All", description: "All-time ranking" },
-];
-
-export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionProps>(({ compact = false }, ref) => {
-  const [ranking, setRanking] = useState<TypingMetric[]>([]);
-  const [rankingLoading, setRankingLoading] = useState(true);
-  const [period, setPeriod] = useState<RankingPeriod>("all");
-
-  const selectedPeriod = periods.find((item) => item.value === period) ?? periods[3];
-
-  const fetchRanking = useCallback(async () => {
-    setRankingLoading(true);
-    try {
-      const res = await fetch(`/api/metrics/ranking?limit=10&period=${period}`);
-      const data = await res.json();
-      setRanking(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error("Failed to fetch ranking:", error);
-    } finally {
-      setRankingLoading(false);
-    }
-  }, [period]);
-
-  useEffect(() => {
-    fetchRanking();
-  }, [fetchRanking]);
+export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionProps>(({
+  compact = false,
+  display = "table",
+  limit = 10,
+}, ref) => {
+  const { t } = useLanguage();
+  const { loading, period, periodOptions, ranking, refresh, selectedPeriod, setPeriod } = useRankingMetrics(limit);
 
   useImperativeHandle(ref, () => ({
-    refresh: fetchRanking
+    refresh,
   }));
 
   return (
@@ -61,13 +42,13 @@ export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionPro
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-comment">
               <Trophy size={16} className="text-purple" />
-              Ranking
+              {t.ranking.sectionLabel}
             </div>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground">
-              Best results
+              {t.ranking.title}
             </h2>
             <p className="mt-1 text-sm text-comment">
-              One result per person, using the best score for the selected period.
+              {t.ranking.subtitle}
             </p>
           </div>
 
@@ -76,7 +57,7 @@ export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionPro
             role="tablist"
             aria-label="Período do ranking"
           >
-            {periods.map((item) => {
+            {periodOptions.map((item) => {
               const isActive = item.value === period;
 
               return (
@@ -100,11 +81,19 @@ export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionPro
           </div>
         </div>
 
-        <RankingTable
-          metrics={ranking}
-          loading={rankingLoading}
-          periodLabel={selectedPeriod.label}
-        />
+        {display === "cards" ? (
+          <RankingCards
+            metrics={ranking}
+            loading={loading}
+            periodLabel={selectedPeriod.label}
+          />
+        ) : (
+          <RankingTable
+            metrics={ranking}
+            loading={loading}
+            periodLabel={selectedPeriod.label}
+          />
+        )}
       </div>
     </motion.div>
   );

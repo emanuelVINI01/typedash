@@ -1,7 +1,10 @@
 "use client";
 
 import type { TypingMetric } from "@/src/types/typing";
-import { Medal, User } from "lucide-react";
+import { User } from "lucide-react";
+import { useLanguage } from "@/src/context/LanguageContext";
+import { RankingIndicator } from "@/src/components/main/RankingIndicator";
+import { formatRankingDate, getRankingWpmColorClass } from "@/src/utils/ranking";
 
 interface Props {
   metrics: TypingMetric[];
@@ -10,10 +13,12 @@ interface Props {
 }
 
 export function RankingTable({ metrics, loading, periodLabel }: Props) {
+  const { language, t } = useLanguage();
+
   if (loading) {
     return (
       <div className="flex h-28 items-center justify-center rounded-xl border border-current-line bg-current-line/10 px-6 text-center text-sm text-comment animate-pulse">
-        Loading ranking...
+        {t.ranking.loading}
       </div>
     );
   }
@@ -21,7 +26,7 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
   if (metrics.length === 0) {
     return (
       <div className="flex h-28 items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 text-center text-sm text-comment">
-        No results in the {periodLabel.toLowerCase()} ranking yet. Be the first.
+        {t.ranking.emptyStart} {periodLabel.toLowerCase()} {t.ranking.emptyEnd}
       </div>
     );
   }
@@ -32,14 +37,14 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
         <span className="font-semibold uppercase tracking-widest">
           {periodLabel}
         </span>
-        <span>{metrics.length} competitors</span>
+        <span>{metrics.length} {t.common.competitors}</span>
       </div>
 
       <div className="w-full max-w-full overflow-x-auto rounded-xl border border-current-line shadow-xl shadow-black/10">
         <table className="w-full min-w-[560px] bg-current-line/5 text-sm">
           <thead>
             <tr className="border-b border-current-line">
-              {["#", "User", "WPM", "Accuracy", "Date"].map((h) => (
+              {["#", t.ranking.headers.user, "WPM", t.ranking.headers.accuracy, t.ranking.headers.date].map((h) => (
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest text-comment"
@@ -52,20 +57,8 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
           <tbody>
             {metrics.map((m, i) => {
               const isEven = i % 2 === 0;
-              const date = new Date(m.createdAt).toLocaleDateString("pt-BR");
-
-              const wpmColor =
-                m.wpm >= 100 ? "text-green" : m.wpm >= 70 ? "text-cyan" : "text-purple";
-              
-              const rankIcon = i === 0 ? (
-                <Medal size={16} className="text-yellow-400" />
-              ) : i === 1 ? (
-                <Medal size={16} className="text-slate-300" />
-              ) : i === 2 ? (
-                <Medal size={16} className="text-amber-600" />
-              ) : (
-                <span className="text-comment">{i + 1}</span>
-              );
+              const date = formatRankingDate(language, m.createdAt);
+              const wpmColor = getRankingWpmColorClass(m.wpm);
 
               return (
                 <tr
@@ -76,7 +69,7 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
                 >
                   <td className="px-4 py-3 font-mono font-bold">
                     <div className="flex items-center justify-center">
-                      {rankIcon}
+                      <RankingIndicator index={i} />
                     </div>
                   </td>
                   <td className="px-4 py-3 font-medium text-foreground">
