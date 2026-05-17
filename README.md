@@ -39,10 +39,10 @@ Typing speed lab with Dracula UI, Framer Motion animations, GitHub authenticatio
 ## Pages
 
 - `/` - typing test and ranking preview.
-- `/treino` - practice drills and training loop.
+- `/practice` - practice drills and training loop.
 - `/ranking` - public ranking by period.
 - `/dashboard` - authenticated personal metrics dashboard.
-- `/sobre` - project overview.
+- `/about` - project overview.
 - `/login` - GitHub authentication.
 
 ## Project Structure

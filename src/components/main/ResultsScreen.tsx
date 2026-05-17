@@ -39,15 +39,15 @@ function StatCard({
     <motion.div
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
-      className="stat-card flex flex-col items-center justify-center gap-2 rounded-2xl border border-current-line/70 p-4 sm:p-6"
+      className="stat-card flex h-28 flex-col items-center justify-center gap-1.5 rounded-2xl border border-current-line/70 p-3 sm:h-32 sm:p-4 lg:h-[6.75rem]"
       style={{ background: "#21222c" }}
     >
       <div style={{ color }}>{icon}</div>
-      <span className="text-xs uppercase tracking-widest" style={{ color: "#6272a4" }}>
+      <span className="text-[10px] uppercase tracking-widest sm:text-xs" style={{ color: "#6272a4" }}>
         {label}
       </span>
       <span
-        className={`font-bold tabular-nums ${large ? "text-6xl" : "text-3xl"}`}
+        className={`font-bold tabular-nums ${large ? "text-4xl sm:text-5xl lg:text-4xl" : "text-2xl sm:text-3xl"}`}
         style={{ color }}
       >
         {value}
@@ -88,34 +88,33 @@ export function ResultsScreen({
   onReset,
 }: ResultsScreenProps) {
   return (
-    <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="flex w-full flex-col gap-8">
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+    <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="grid w-full gap-4 lg:grid-cols-[9rem_1fr]">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-1">
         <StatCard
-          icon={<Trophy className="w-8 h-8" />}
+          icon={<Trophy className="h-7 w-7" />}
           label="WPM"
           value={wpm}
           color="#bd93f9"
           large
-          />
+        />
         <StatCard
-          icon={<Activity className="w-6 h-6" />}
+          icon={<Activity className="h-5 w-5" />}
           label="Precisão"
           value={`${accuracy}%`}
           color="#50fa7b"
-          />
+        />
         <StatCard
-          icon={<CheckCircle2 className="w-6 h-6" />}
+          icon={<CheckCircle2 className="h-5 w-5" />}
           label="Acertos"
           value={correct}
           color="#50fa7b"
-          />
+        />
         <StatCard
-          icon={<XCircle className="w-6 h-6" />}
+          icon={<XCircle className="h-5 w-5" />}
           label="Erros"
           value={incorrect}
           color="#ff5555"
-          />
+        />
       </div>
 
       {/* WPM Chart */}
@@ -152,19 +151,18 @@ export function ResultsScreen({
             />
           </LineChart>
         </ResponsiveContainer>
-      </motion.div>
 
-      {/* Reset button */}
-      <div className="flex justify-center">
-        <button
-          onClick={onReset}
-          className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 hover:scale-105 active:scale-95"
-          style={{ background: "#bd93f9", color: "#282a36" }}
-        >
-          <RotateCcw className="w-4 h-4" />
-          Tentar Novamente
-        </button>
-      </div>
+        <div className="flex justify-center pt-6">
+          <button
+            onClick={onReset}
+            className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 hover:scale-105 active:scale-95"
+            style={{ background: "#bd93f9", color: "#282a36" }}
+          >
+            <RotateCcw className="w-4 h-4" />
+            Tentar Novamente
+          </button>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

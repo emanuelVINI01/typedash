@@ -24,10 +24,10 @@ export function Header() {
   const navItems = useMemo(
     () => [
       { href: "/", label: "Test", icon: Home },
-      { href: "/treino", label: "Practice", icon: Dumbbell },
+      { href: "/practice", label: "Practice", icon: Dumbbell },
       { href: "/ranking", label: "Ranking", icon: Trophy },
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/sobre", label: "About", icon: Info },
+      { href: "/about", label: "About", icon: Info },
     ],
     [],
   );
@@ -67,9 +67,8 @@ export function Header() {
                   key={href}
                   href={href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`relative text-xs font-semibold uppercase tracking-widest transition-colors hover:text-cyan ${
-                    isActive ? "text-cyan" : "text-comment"
-                  }`}
+                  className={`relative text-xs font-semibold uppercase tracking-widest transition-colors hover:text-cyan ${isActive ? "text-cyan" : "text-comment"
+                    }`}
                 >
                   {label}
                   {isActive && (
@@ -136,9 +135,8 @@ export function Header() {
                 key={href}
                 href={href}
                 aria-current={isActive ? "page" : undefined}
-                className={`relative flex h-full min-w-0 flex-col items-center justify-between rounded-xl px-0.5 py-1.5 text-[9px] font-semibold uppercase tracking-tight transition-colors sm:px-1 sm:text-[10px] ${
-                  isActive ? "text-foreground" : "text-comment hover:text-cyan"
-                }`}
+                className={`relative flex h-full min-w-0 flex-col items-center justify-between rounded-xl px-0.5 py-1.5 text-[9px] font-semibold uppercase tracking-tight transition-colors sm:px-1 sm:text-[10px] ${isActive ? "text-foreground" : "text-comment hover:text-cyan"
+                  }`}
               >
                 {isActive && (
                   <motion.span
@@ -148,9 +146,8 @@ export function Header() {
                   />
                 )}
                 <span
-                  className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-lg transition-colors sm:h-7 sm:w-7 ${
-                    isActive ? "bg-purple/15 text-purple" : "text-comment"
-                  }`}
+                  className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-lg transition-colors sm:h-7 sm:w-7 ${isActive ? "bg-purple/15 text-purple" : "text-comment"
+                    }`}
                 >
                   <Icon className="h-4 w-4" />
                 </span>

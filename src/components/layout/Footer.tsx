@@ -5,10 +5,10 @@ import packageJson from "@/package.json";
 
 const footerLinks = [
   { label: "Test", href: "/" },
-  { label: "Practice", href: "/treino" },
+  { label: "Practice", href: "/practice" },
   { label: "Ranking", href: "/ranking" },
   { label: "Dashboard", href: "/dashboard" },
-  { label: "About", href: "/sobre" },
+  { label: "About", href: "/about" },
 ];
 
 export default function Footer() {

@@ -12,16 +12,15 @@ interface Props {
 export function RankingTable({ metrics, loading, periodLabel }: Props) {
   if (loading) {
     return (
-      <div className="flex flex-col gap-2">
-        <div className="h-10 rounded-lg border border-current-line bg-current-line/10 animate-pulse" />
-        <div className="h-64 rounded-xl border border-current-line bg-current-line/10 animate-pulse" />
+      <div className="flex h-28 items-center justify-center rounded-xl border border-current-line bg-current-line/10 px-6 text-center text-sm text-comment animate-pulse">
+        Loading ranking...
       </div>
     );
   }
 
   if (metrics.length === 0) {
     return (
-      <div className="flex items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 py-12 text-center text-sm text-comment">
+      <div className="flex h-28 items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 text-center text-sm text-comment">
         No results in the {periodLabel.toLowerCase()} ranking yet. Be the first.
       </div>
     );

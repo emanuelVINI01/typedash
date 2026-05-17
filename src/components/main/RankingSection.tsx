@@ -10,6 +10,10 @@ export interface RankingSectionHandle {
   refresh: () => void;
 }
 
+interface RankingSectionProps {
+  compact?: boolean;
+}
+
 const periods: { value: RankingPeriod; label: string; description: string }[] = [
   { value: "day", label: "Today", description: "Daily ranking" },
   { value: "week", label: "Week", description: "Weekly ranking" },
@@ -17,7 +21,7 @@ const periods: { value: RankingPeriod; label: string; description: string }[] = 
   { value: "all", label: "All", description: "All-time ranking" },
 ];
 
-export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
+export const RankingSection = forwardRef<RankingSectionHandle, RankingSectionProps>(({ compact = false }, ref) => {
   const [ranking, setRanking] = useState<TypingMetric[]>([]);
   const [rankingLoading, setRankingLoading] = useState(true);
   const [period, setPeriod] = useState<RankingPeriod>("all");
@@ -50,10 +54,10 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      className="mt-16 w-full min-w-0 max-w-4xl"
+      className={`${compact ? "mt-0 max-w-none" : "mt-16 max-w-4xl"} w-full min-w-0`}
     >
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className={`${compact ? "flex-col" : "flex-col md:flex-row md:items-end md:justify-between"} flex gap-4`}>
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-comment">
               <Trophy size={16} className="text-purple" />
@@ -68,7 +72,7 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
           </div>
 
           <div
-            className="grid w-full grid-cols-2 gap-1 rounded-lg border border-current-line bg-current-line/10 p-1 sm:inline-grid sm:w-auto sm:grid-cols-4"
+            className={`${compact ? "grid-cols-4" : "grid-cols-2 sm:inline-grid sm:w-auto sm:grid-cols-4"} grid w-full gap-1 rounded-lg border border-current-line bg-current-line/10 p-1`}
             role="tablist"
             aria-label="Período do ranking"
           >
@@ -83,7 +87,7 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
                   aria-selected={isActive}
                   title={item.description}
                   onClick={() => setPeriod(item.value)}
-                  className={`min-w-0 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:min-w-20 ${
+                  className={`${compact ? "px-2" : "px-3 sm:min-w-20"} min-w-0 rounded-md py-2 text-sm font-semibold transition-colors ${
                     isActive
                       ? "bg-purple text-background"
                       : "text-comment hover:bg-current-line/40 hover:text-foreground"
