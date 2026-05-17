@@ -1,6 +1,7 @@
 "use client";
 
 import { Trophy, Activity, CheckCircle2, XCircle, RotateCcw } from "lucide-react";
+import { motion } from "framer-motion";
 import {
   LineChart,
   Line,
@@ -35,8 +36,10 @@ function StatCard({
   large?: boolean;
 }) {
   return (
-    <div
-      className="stat-card flex flex-col items-center justify-center gap-2 rounded-2xl p-6"
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="stat-card flex flex-col items-center justify-center gap-2 rounded-2xl border border-current-line/70 p-4 sm:p-6"
       style={{ background: "#21222c" }}
     >
       <div style={{ color }}>{icon}</div>
@@ -49,7 +52,7 @@ function StatCard({
       >
         {value}
       </span>
-    </div>
+    </motion.div>
   );
 }
 
@@ -85,9 +88,9 @@ export function ResultsScreen({
   onReset,
 }: ResultsScreenProps) {
   return (
-    <div className="fade-in w-full flex flex-col gap-8">
+    <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="flex w-full flex-col gap-8">
       {/* Stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <StatCard
           icon={<Trophy className="w-8 h-8" />}
           label="WPM"
@@ -116,8 +119,11 @@ export function ResultsScreen({
       </div>
 
       {/* WPM Chart */}
-      <div
-        className="rounded-2xl p-6"
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.12 }}
+        className="rounded-2xl border border-current-line/70 p-4 sm:p-6"
         style={{ background: "#21222c" }}
       >
         <p
@@ -146,7 +152,7 @@ export function ResultsScreen({
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
+      </motion.div>
 
       {/* Reset button */}
       <div className="flex justify-center">
@@ -159,6 +165,6 @@ export function ResultsScreen({
           Tentar Novamente
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

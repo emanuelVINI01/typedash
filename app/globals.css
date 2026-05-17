@@ -1,15 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #282a36;
-  --foreground: #f8f8f2;
-  --comment: #6272a4;
-  --purple: #bd93f9;
-  --red: #ff5555;
-  --green: #50fa7b;
-  --cyan: #8be9fd;
-  
-  --current-line: #44475a;
+  --font-geist-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-geist-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  --dracula-bg: #282a36;
+  --dracula-surface: #343746;
+  --dracula-card: #44475a;
+  --dracula-border: #44475a;
+  --dracula-fg: #f8f8f2;
+  --dracula-comment: #a7b0c8;
+  --dracula-cyan: #8be9fd;
+  --dracula-purple: #bd93f9;
+  --dracula-green: #50fa7b;
+  --dracula-pink: #ff79c6;
+  --dracula-red: #ff5555;
+  --dracula-orange: #ffb86c;
+  --dracula-yellow: #f1fa8c;
+
+  --background: var(--dracula-bg);
+  --foreground: var(--dracula-fg);
+  --comment: var(--dracula-comment);
+  --purple: var(--dracula-purple);
+  --red: var(--dracula-red);
+  --green: var(--dracula-green);
+  --cyan: var(--dracula-cyan);
+  --current-line: var(--dracula-card);
 }
 
 @theme inline {
@@ -26,8 +41,83 @@
 }
 
 body {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  position: relative;
+}
+
+html {
+  width: 100%;
+  max-width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:where(main, section, article, header, footer, nav, aside, div, form, label, ul, ol, li) {
+  min-width: 0;
+}
+
+:where(h1, h2, h3, h4, p, a, span, button, code, pre) {
+  overflow-wrap: anywhere;
+}
+
+:where(img, video, canvas, svg, table) {
+  max-width: 100%;
+}
+
+:where(pre, code) {
+  white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+  :where(input, select, textarea) {
+    font-size: 16px;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+::selection {
+  background: var(--dracula-purple);
+  color: var(--dracula-bg);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dracula-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dracula-card);
+  border-radius: 999px;
+}
+
+.glass {
+  background: rgba(36, 39, 54, 0.68);
+  border: 1px solid rgba(68, 71, 90, 0.68);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 @keyframes blink {

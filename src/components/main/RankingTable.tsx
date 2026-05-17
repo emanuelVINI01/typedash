@@ -22,25 +22,25 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
   if (metrics.length === 0) {
     return (
       <div className="flex items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 py-12 text-center text-sm text-comment">
-        Nenhum resultado no ranking de {periodLabel.toLowerCase()} ainda. Seja o primeiro.
+        No results in the {periodLabel.toLowerCase()} ranking yet. Be the first.
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-4 text-xs text-comment">
+    <div className="flex w-full min-w-0 flex-col gap-3">
+      <div className="flex min-w-0 items-center justify-between gap-4 text-xs text-comment">
         <span className="font-semibold uppercase tracking-widest">
           {periodLabel}
         </span>
-        <span>{metrics.length} competidores</span>
+        <span>{metrics.length} competitors</span>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-current-line shadow-xl shadow-black/10">
-        <table className="w-full text-sm bg-current-line/5">
+      <div className="w-full max-w-full overflow-x-auto rounded-xl border border-current-line shadow-xl shadow-black/10">
+        <table className="w-full min-w-[560px] bg-current-line/5 text-sm">
           <thead>
             <tr className="border-b border-current-line">
-              {["#", "Usuário", "WPM", "Precisão", "Data"].map((h) => (
+              {["#", "User", "WPM", "Accuracy", "Date"].map((h) => (
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest text-comment"
@@ -81,9 +81,9 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
                     </div>
                   </td>
                   <td className="px-4 py-3 font-medium text-foreground">
-                    <div className="flex items-center gap-2">
+                    <div className="flex min-w-0 items-center gap-2">
                       <User size={14} className="text-comment" />
-                      {m.userName}
+                      <span className="min-w-0 truncate">{m.userName}</span>
                     </div>
                   </td>
                   <td className={`px-4 py-3 font-mono font-bold ${wpmColor}`}>

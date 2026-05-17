@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Header } from "@/src/components/main/Header";
 import { StatsOverview } from "@/src/components/dashboard/StatsOverview";
 import { FilterBar, SortKey } from "@/src/components/dashboard/FilterBar";
@@ -55,16 +56,16 @@ export default function DashboardPage() {
         const res = await fetch("/api/metrics/me?limit=100");
         if (!res.ok) {
           if (res.status === 401) {
-            setError("Você precisa estar autenticado para ver seu histórico.");
+            setError("You need to be authenticated to view your history.");
           } else {
-            setError("Erro ao carregar métricas. Tente novamente.");
+            setError("Could not load metrics. Try again.");
           }
           return;
         }
         const data: TypingMetric[] = await res.json();
         setMetrics(data);
       } catch {
-        setError("Falha na conexão com o servidor.");
+        setError("Could not connect to the server.");
       } finally {
         setLoading(false);
       }
@@ -75,23 +76,23 @@ export default function DashboardPage() {
   const sortedMetrics = useMemo(() => sortMetrics(metrics, sortKey), [metrics, sortKey]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#282a36" }}>
+    <div className="flex min-h-screen flex-col bg-background pb-24 text-foreground lg:pb-0">
       <Header />
 
-      <main className="flex-1 flex flex-col px-4 md:px-8 py-8 max-w-7xl mx-auto w-full gap-8">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-6 md:px-8 md:py-8">
         {/* Page Title */}
-        <div className="fade-in">
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
           <h1
             className="text-2xl font-bold tracking-tight"
             style={{ color: "#f8f8f2" }}
           >
-            Meu{" "}
+            Performance{" "}
             <span style={{ color: "#bd93f9" }}>Dashboard</span>
           </h1>
           <p className="text-sm mt-1" style={{ color: "#6272a4" }}>
-            Seu histórico de testes e evolução ao longo do tempo.
+            Personal test history, WPM trends and accuracy consistency.
           </p>
-        </div>
+        </motion.div>
 
         {loading && (
           <div className="flex flex-col gap-4 fade-in">
@@ -121,13 +122,13 @@ export default function DashboardPage() {
             <p className="text-sm font-medium" style={{ color: "#ff5555" }}>
               {error}
             </p>
-            {error.includes("autenticado") && (
+            {error.includes("authenticated") && (
               <a
                 href="/login"
                 className="inline-block mt-4 px-4 py-2 rounded-lg text-sm font-semibold transition-all"
                 style={{ background: "#bd93f9", color: "#282a36" }}
               >
-                Entrar
+                Login
               </a>
             )}
           </div>
@@ -151,7 +152,7 @@ export default function DashboardPage() {
                 className="text-sm font-semibold uppercase tracking-widest"
                 style={{ color: "#6272a4" }}
               >
-                Histórico de Testes
+                Test History
               </h2>
               <FilterBar value={sortKey} onChange={setSortKey} />
               <HistoryTable metrics={sortedMetrics} />

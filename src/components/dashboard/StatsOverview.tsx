@@ -50,25 +50,25 @@ export function StatsOverview({ metrics }: Props) {
   const cards: StatCardProps[] = [
     {
       icon: <Zap size={16} />,
-      label: "Melhor WPM",
+      label: "Best WPM",
       value: `${bestWpm}`,
       color: "#bd93f9",
     },
     {
       icon: <BarChart2 size={16} />,
-      label: "WPM Médio",
+      label: "Average WPM",
       value: `${avgWpm}`,
       color: "#ff79c6",
     },
     {
       icon: <Target size={16} />,
-      label: "Acurácia Média",
+      label: "Average Accuracy",
       value: `${avgAccuracy}%`,
       color: "#50fa7b",
     },
     {
       icon: <Clock size={16} />,
-      label: "Testes Realizados",
+      label: "Completed Tests",
       value: `${total}`,
       color: "#8be9fd",
     },

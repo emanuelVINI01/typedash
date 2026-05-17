@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo } from "react";
+import { motion } from "framer-motion";
 import type { CharStatus, Phase, TypingInputEvent } from "@/src/types/typing";
 
 interface TypingAreaProps {
@@ -49,11 +50,13 @@ export function TypingArea({
   }, [words]);
 
   return (
-    <div
+    <motion.div
       ref={inputRef}
       tabIndex={0}
-      className="relative outline-none rounded-2xl p-6 cursor-text select-none"
-      style={{ background: "#21222c" }}
+      initial={{ opacity: 0, y: 18, scale: 0.99 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.32, ease: "easeOut" }}
+      className="relative cursor-text select-none overflow-hidden rounded-2xl border border-current-line/80 bg-[#21222c] p-4 outline-none shadow-2xl shadow-black/20 sm:p-6"
       aria-label="Typing area – start typing to begin the test"
     >
       {phase === "idle" && (
@@ -67,17 +70,16 @@ export function TypingArea({
               preventDefault: () => {},
             })
           }
-          className="absolute inset-0 flex items-center justify-center rounded-2xl text-sm tracking-widest uppercase z-10 cursor-pointer transition-all duration-300 hover:bg-black/20"
-          style={{ color: "#6272a4", background: "rgba(33,34,44,0.7)" }}
+          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-2xl bg-[#21222c]/80 px-5 text-center text-xs uppercase tracking-widest text-comment backdrop-blur-sm transition-all duration-300 hover:bg-black/20 sm:text-sm"
         >
-          Clique aqui, pressione Enter ou comece a digitar para começar...
+          Tap here or start typing to begin
         </div>
       )}
 
       <div
-        className="font-mono text-lg leading-relaxed tracking-wide break-all transition-all duration-500"
+        className="break-words font-mono text-xl leading-relaxed tracking-wide transition-all duration-500 sm:text-2xl"
         style={{
-          lineHeight: "2.5rem",
+          lineHeight: "2.65rem",
           filter: phase === "idle" ? "blur(10px)" : "none",
           opacity: phase === "idle" ? 0.3 : 1,
         }}
@@ -115,6 +117,6 @@ export function TypingArea({
           );
         })}
       </div>
-    </div>
+    </motion.div>
   );
 }

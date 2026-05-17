@@ -88,7 +88,7 @@ export function PerformanceCharts({ metrics }: Props) {
         className="rounded-xl border flex items-center justify-center py-10 text-sm"
         style={{ background: "#21222c", borderColor: "#44475a", color: "#6272a4" }}
       >
-        Complete pelo menos 2 testes para ver os gráficos de performance.
+        Complete at least 2 tests to see performance charts.
       </div>
     );
   }
@@ -105,27 +105,27 @@ export function PerformanceCharts({ metrics }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-sm font-semibold uppercase tracking-widest" style={{ color: "#6272a4" }}>
-        Evolução ao Longo do Tempo
+        Performance Over Time
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ChartCard
           title="WPM"
-          subtitle="Palavras por minuto"
+          subtitle="Words per minute"
           data={wpmData}
           color="#bd93f9"
           domain={[0, Math.max(...wpmData.map((d) => d.value)) + 10]}
         />
         <ChartCard
-          title="Precisão"
-          subtitle="Percentagem de acertos"
+          title="Accuracy"
+          subtitle="Correct keystroke percentage"
           data={accData}
           color="#8be9fd"
           unit="%"
           domain={[0, 100]}
         />
         <ChartCard
-          title="Duração"
-          subtitle="Tempo do teste em segundos"
+          title="Duration"
+          subtitle="Test time in seconds"
           data={durData}
           color="#50fa7b"
           unit="s"

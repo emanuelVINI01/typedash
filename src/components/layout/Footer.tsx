@@ -1,56 +1,73 @@
 import Link from "next/link";
-import { ExternalLink, Keyboard } from "lucide-react";
+import { ExternalLink, Keyboard, ShieldCheck, Sparkles } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import packageJson from "@/package.json";
 
+const footerLinks = [
+  { label: "Test", href: "/" },
+  { label: "Practice", href: "/treino" },
+  { label: "Ranking", href: "/ranking" },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "About", href: "/sobre" },
+];
+
 export default function Footer() {
-    return (
-        <footer className="w-full mt-24 border-t border-[#44475a] bg-[#21222c]/50 py-10 text-[#6272a4]">
-            <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-start md:justify-between">
+  return (
+    <footer className="relative z-10 w-full border-t border-current-line/70 bg-background text-comment">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-32 pt-10 sm:gap-10 sm:px-6 md:py-12">
+        <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr_0.8fr] md:items-start">
+          <div className="max-w-md">
+            <Link href="/" className="inline-flex items-center gap-3 text-foreground">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-purple/40 bg-purple/10 shadow-[0_0_22px_rgba(189,147,249,0.18)]">
+                <Keyboard className="h-5 w-5 text-purple" />
+              </span>
+              <span className="font-semibold tracking-tight">TypeDash</span>
+            </Link>
+            <p className="mt-4 text-sm leading-relaxed">
+              Mobile-first typing performance lab with WPM telemetry, personal history, rankings, practice resources and a Dracula developer interface.
+            </p>
+          </div>
 
-                <div className="flex flex-col items-center md:items-start gap-3">
-                    <div className="flex items-center gap-2 text-[#f8f8f2] font-semibold text-xl">
-                        <Keyboard className="w-6 h-6 text-[#bd93f9]" />
-                        <span>TypeDash</span>
-                    </div>
-                    <p className="text-sm text-[#6272a4] text-center md:text-left max-w-sm leading-relaxed">
-                        Teste de digitação com histórico pessoal, rankings por período e métricas transparentes para acompanhar evolução.
-                    </p>
-                </div>
-
-                <nav className="flex flex-col items-center gap-3 text-sm md:items-end">
-                    <div className="flex flex-wrap items-center justify-center gap-2 md:justify-end">
-                        <Link
-                            href="/sobre"
-                            className="rounded-lg px-3 py-2 text-[#f8f8f2] transition-colors hover:bg-[#44475a]/40 hover:text-[#bd93f9]"
-                        >
-                            Sobre
-                        </Link>
-                        <Link
-                            href="/dashboard"
-                            className="rounded-lg px-3 py-2 text-[#f8f8f2] transition-colors hover:bg-[#44475a]/40 hover:text-[#bd93f9]"
-                        >
-                            Dashboard
-                        </Link>
-                    </div>
-
-                    <a
-                        href="https://github.com/emanuelVINI01/typedash"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-2 rounded-lg border border-[#bd93f9]/20 bg-[#bd93f9]/10 px-4 py-2 text-[#f8f8f2] transition-colors hover:border-[#bd93f9]/50 hover:text-[#bd93f9]"
-                    >
-                        <FaGithub className="w-4 h-4" />
-                        <span className="font-medium">emanuelVINI01/typedash</span>
-                        <ExternalLink className="h-3.5 w-3.5" />
-                    </a>
-                </nav>
+          <div>
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-foreground">
+              <Sparkles className="h-3.5 w-3.5 text-cyan" />
+              Navigation
             </div>
-
-            <div className="mx-auto mt-8 flex w-full max-w-6xl flex-col items-center justify-between gap-3 border-t border-[#44475a]/50 px-6 pt-6 text-xs text-[#6272a4] sm:flex-row">
-                <p>&copy; {new Date().getFullYear()} TypeDash. Projeto open-source.</p>
-                <span className="opacity-70">v{packageJson.version}</span>
+            <div className="grid gap-2 text-sm">
+              {footerLinks.map((link) => (
+                <Link key={link.href} href={link.href} className="transition-colors hover:text-cyan">
+                  {link.label}
+                </Link>
+              ))}
             </div>
-        </footer>
-    );
+          </div>
+
+          <div>
+            <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-foreground">
+              <ShieldCheck className="h-3.5 w-3.5 text-green" />
+              Project
+            </div>
+            <div className="grid gap-3 text-sm">
+              <a
+                href="https://github.com/emanuelVINI01/typedash"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex w-fit items-center gap-2 rounded-lg border border-cyan/20 bg-cyan/10 px-3 py-2 text-foreground transition-colors hover:border-cyan/50 hover:text-cyan"
+              >
+                <FaGithub className="h-4 w-4" />
+                Repository
+                <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+              <span>Version {packageJson.version}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 border-t border-current-line/50 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} TypeDash. Open-source typing analytics project.</p>
+          <p className="text-comment/80">Next.js + Auth.js + Recharts + Framer Motion</p>
+        </div>
+      </div>
+    </footer>
+  );
 }

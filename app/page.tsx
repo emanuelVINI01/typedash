@@ -8,6 +8,8 @@ import {
   useMemo,
 } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { BarChart3, Keyboard, ShieldCheck, Target, Trophy } from "lucide-react";
 import { Header } from "@/src/components/main/Header";
 import { LiveStats } from "@/src/components/main/LiveStats";
 import { TypingArea } from "@/src/components/main/TypingArea";
@@ -268,27 +270,59 @@ export default function TypeDashPage() {
   }, [wpmHistory]);
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "#282a36" }}
-    >
+    <div className="min-h-screen bg-background pb-24 text-foreground lg:pb-0">
       <Header />
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
-        <div className="w-full max-w-3xl flex flex-col gap-6">
-          {/* Live Stats – always visible */}
-          <LiveStats
-            timeLeft={timeLeft}
-            wpm={liveWpm}
-            accuracy={liveAccuracy}
-            phase={phase}
-          />
-          {!(session?.user) && (
-            <p className="text-center text-purple font-bold text-lg">
-              Seus resultados não serão salvos se você não estiver logado.
-              <Link href="/login" className="text-blue-300"> Entre para salvar</Link>.
-            </p>)}
-          {/* Typing Area OR Results */}
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-6 sm:px-6 sm:py-10">
+        <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.42 }}>
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-purple sm:text-xs">
+              <Keyboard className="h-3.5 w-3.5" />
+              Dracula typing cockpit
+            </div>
+            <h1 className="max-w-3xl text-3xl font-semibold leading-[1.08] tracking-tight text-foreground sm:text-5xl">
+              Measure speed, accuracy and consistency in one mobile-first flow.
+            </h1>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-comment sm:text-base">
+              TypeDash turns keystrokes into product metrics: WPM, accuracy, correction behavior, personal history and global rankings.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.08, duration: 0.42 }}
+            className="grid gap-3 rounded-2xl border border-current-line/70 bg-current-line/20 p-4 sm:grid-cols-3"
+          >
+            {[
+              { icon: Target, label: "Duration", value: `${TEST_DURATION}s`, color: "text-cyan" },
+              { icon: BarChart3, label: "Telemetry", value: "live", color: "text-green" },
+              { icon: Trophy, label: "Ranking", value: "global", color: "text-purple" },
+            ].map(({ icon: Icon, label, value, color }) => (
+              <div key={label} className="rounded-xl border border-current-line bg-background/35 p-4">
+                <Icon className={`h-5 w-5 ${color}`} />
+                <p className="mt-3 text-xs uppercase tracking-widest text-comment">{label}</p>
+                <p className="mt-1 font-mono text-xl font-bold text-foreground">{value}</p>
+              </div>
+            ))}
+          </motion.div>
+        </section>
+
+        <section className="mx-auto flex w-full max-w-4xl flex-col gap-5">
+          <LiveStats timeLeft={timeLeft} wpm={liveWpm} accuracy={liveAccuracy} phase={phase} />
+
+          {!session?.user && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl border border-purple/25 bg-purple/10 px-4 py-3 text-sm leading-6 text-comment"
+            >
+              <ShieldCheck className="mr-2 inline h-4 w-4 text-purple" />
+              Results are only saved when you are logged in.
+              <Link href="/login" className="ml-1 font-semibold text-cyan">Login to save progress</Link>.
+            </motion.div>
+          )}
+
           {phase !== "results" ? (
             <TypingArea
               words={words}
@@ -308,16 +342,27 @@ export default function TypeDashPage() {
             />
           )}
 
-          {/* Hint */}
           {phase !== "results" && (
-            <p className="text-center text-xs" style={{ color: "#44475a" }}>
-              Pressione <kbd className="px-1.5 py-0.5 rounded" style={{ background: "#44475a", color: "#6272a4" }}>Backspace</kbd> para corrigir · O teste reinicia automaticamente após{" "}
-              <span style={{ color: "#6272a4" }}>{TEST_DURATION}s</span>
+            <p className="text-center text-xs text-comment">
+              Press <kbd className="rounded border border-current-line bg-current-line px-1.5 py-0.5 text-comment">Backspace</kbd> to correct. The test ends after{" "}
+              <span className="text-cyan">{TEST_DURATION}s</span>.
             </p>
           )}
-        </div>
+        </section>
 
-        {/* Global Ranking Table Componentizado */}
+        <section className="mx-auto grid w-full max-w-4xl gap-3 sm:grid-cols-3">
+          {[
+            ["Focus", "Short 30-second sessions keep feedback fast on mobile."],
+            ["Fairness", "Backspace corrections adjust correct and incorrect counters."],
+            ["Progress", "Authenticated tests feed the dashboard and ranking views."],
+          ].map(([title, text]) => (
+            <article key={title} className="rounded-xl border border-current-line/70 bg-current-line/20 p-4">
+              <h2 className="font-semibold text-foreground">{title}</h2>
+              <p className="mt-2 text-sm leading-6 text-comment">{text}</p>
+            </article>
+          ))}
+        </section>
+
         <RankingSection ref={rankingRef} />
       </main>
     </div>

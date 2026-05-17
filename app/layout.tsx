@@ -1,16 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 
 export const metadata: Metadata = {
@@ -19,7 +8,7 @@ export const metadata: Metadata = {
     default: "TypeDash",
     template: "%s | TypeDash",
   },
-  description: "Meça sua velocidade e precisão de digitação em tempo real com histórico pessoal e rankings por período.",
+  description: "Measure typing speed and accuracy in real time with personal history, rankings and a mobile-first Dracula interface.",
   keywords: ["typing test", "velocidade de digitação", "wpm", "programador", "dracula theme", "typedash"],
   authors: [{ name: "Emanuel" }],
   applicationName: "TypeDash",
@@ -29,7 +18,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "TypeDash - Performance em cada tecla",
-    description: "Teste seu WPM, acompanhe sua evolução e dispute rankings diários, semanais, mensais e gerais.",
+    description: "Test WPM, track progress and compete in daily, weekly, monthly and all-time rankings.",
     url: "https://typedash-beta.vercel.app",
     siteName: "TypeDash",
     images: [
@@ -40,13 +29,13 @@ export const metadata: Metadata = {
         alt: "Preview do TypeDash Dashboard",
       },
     ],
-    locale: "pt_BR",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "TypeDash | Coding Speed Test",
-    description: "Teste sua velocidade de digitação com o tema Dracula.",
+    description: "Typing speed test with persistent metrics and a Dracula theme.",
     images: ["/dash_image.png"],
   },
   robots: {
@@ -65,8 +54,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="en"
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col">
         <AuthProvider>{children}</AuthProvider>

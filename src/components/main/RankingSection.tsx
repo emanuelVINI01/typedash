@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useImperativeHandle, forwardRef } from "react";
+import { motion } from "framer-motion";
 import type { RankingPeriod, TypingMetric } from "@/src/types/typing";
 import { RankingTable } from "./RankingTable";
 import { Trophy } from "lucide-react";
@@ -10,10 +11,10 @@ export interface RankingSectionHandle {
 }
 
 const periods: { value: RankingPeriod; label: string; description: string }[] = [
-  { value: "day", label: "Hoje", description: "Ranking diário" },
-  { value: "week", label: "Semana", description: "Ranking semanal" },
-  { value: "month", label: "Mês", description: "Ranking mensal" },
-  { value: "all", label: "Geral", description: "Ranking geral" },
+  { value: "day", label: "Today", description: "Daily ranking" },
+  { value: "week", label: "Week", description: "Weekly ranking" },
+  { value: "month", label: "Month", description: "Monthly ranking" },
+  { value: "all", label: "All", description: "All-time ranking" },
 ];
 
 export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
@@ -45,7 +46,12 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
   }));
 
   return (
-    <div className="w-full max-w-4xl mt-16 fade-in">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      className="mt-16 w-full min-w-0 max-w-4xl"
+    >
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
@@ -54,15 +60,15 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
               Ranking
             </div>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground">
-              Melhores resultados
+              Best results
             </h2>
             <p className="mt-1 text-sm text-comment">
-              Um resultado por pessoa, usando a melhor marca dentro do período.
+              One result per person, using the best score for the selected period.
             </p>
           </div>
 
           <div
-            className="grid grid-cols-2 gap-1 rounded-lg border border-current-line bg-current-line/10 p-1 sm:inline-grid sm:grid-cols-4"
+            className="grid w-full grid-cols-2 gap-1 rounded-lg border border-current-line bg-current-line/10 p-1 sm:inline-grid sm:w-auto sm:grid-cols-4"
             role="tablist"
             aria-label="Período do ranking"
           >
@@ -77,7 +83,7 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
                   aria-selected={isActive}
                   title={item.description}
                   onClick={() => setPeriod(item.value)}
-                  className={`min-w-20 rounded-md px-3 py-2 text-sm font-semibold transition-colors ${
+                  className={`min-w-0 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:min-w-20 ${
                     isActive
                       ? "bg-purple text-background"
                       : "text-comment hover:bg-current-line/40 hover:text-foreground"
@@ -96,7 +102,7 @@ export const RankingSection = forwardRef<RankingSectionHandle>((_, ref) => {
           periodLabel={selectedPeriod.label}
         />
       </div>
-    </div>
+    </motion.div>
   );
 });
 

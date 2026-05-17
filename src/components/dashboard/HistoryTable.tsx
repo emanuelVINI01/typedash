@@ -21,18 +21,18 @@ export function HistoryTable({ metrics }: Props) {
         className="flex items-center justify-center rounded-xl border py-12 text-sm"
         style={{ background: "#21222c", borderColor: "#44475a", color: "#6272a4" }}
       >
-        Nenhum teste encontrado. Complete um teste para ver seu histórico.
+        No tests found. Complete a test to see your history.
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="overflow-x-auto rounded-xl border" style={{ borderColor: "#44475a" }}>
-        <table className="w-full text-sm" style={{ background: "#21222c" }}>
+    <div className="flex w-full min-w-0 flex-col gap-3">
+      <div className="w-full max-w-full overflow-x-auto rounded-xl border" style={{ borderColor: "#44475a" }}>
+        <table className="w-full min-w-[560px] text-sm" style={{ background: "#21222c" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid #44475a" }}>
-              {["#", "Data", "WPM", "Precisão", "Duração"].map((h) => (
+              {["#", "Date", "WPM", "Accuracy", "Duration"].map((h) => (
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest"
@@ -119,7 +119,7 @@ export function HistoryTable({ metrics }: Props) {
             (e.currentTarget as HTMLButtonElement).style.color = "#6272a4";
           }}
         >
-          Exibir mais ({metrics.length - visible} restantes)
+          Show more ({metrics.length - visible} remaining)
         </button>
       )}
     </div>

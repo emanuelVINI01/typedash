@@ -14,19 +14,19 @@ interface Props {
 }
 
 const OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "recent", label: "Mais Recente" },
-  { key: "wpm_desc", label: "Maior WPM" },
-  { key: "wpm_asc", label: "Menor WPM" },
-  { key: "accuracy_desc", label: "Maior Acurácia" },
-  { key: "accuracy_asc", label: "Menor Acurácia" },
-  { key: "duration_desc", label: "Maior Duração" },
+  { key: "recent", label: "Newest" },
+  { key: "wpm_desc", label: "Highest WPM" },
+  { key: "wpm_asc", label: "Lowest WPM" },
+  { key: "accuracy_desc", label: "Highest Accuracy" },
+  { key: "accuracy_asc", label: "Lowest Accuracy" },
+  { key: "duration_desc", label: "Longest Duration" },
 ];
 
 export function FilterBar({ value, onChange }: Props) {
   return (
-    <div className="flex flex-wrap gap-2 items-center">
+    <div className="flex w-full max-w-full items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:pb-0">
       <span className="text-xs font-semibold uppercase tracking-widest mr-1" style={{ color: "#6272a4" }}>
-        Ordenar:
+        Sort:
       </span>
       {OPTIONS.map((opt) => {
         const active = value === opt.key;
@@ -34,7 +34,7 @@ export function FilterBar({ value, onChange }: Props) {
           <button
             key={opt.key}
             onClick={() => onChange(opt.key)}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 border cursor-pointer"
+            className="shrink-0 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer"
             style={{
               background: active ? "#bd93f9" : "#21222c",
               color: active ? "#282a36" : "#f8f8f2",
