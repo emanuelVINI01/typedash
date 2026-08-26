@@ -7,15 +7,11 @@ export function DashboardLoadingState() {
         {Array.from({ length: 4 }, (_, index) => (
           <div
             key={index}
-            className="h-24 rounded-xl border p-5 animate-pulse"
-            style={{ background: "#21222c", borderColor: "#44475a" }}
+            className="h-24 animate-pulse rounded-xl border border-[var(--border)] bg-[var(--card)] p-5"
           />
         ))}
       </div>
-      <div
-        className="h-56 rounded-xl border animate-pulse"
-        style={{ background: "#21222c", borderColor: "#44475a" }}
-      />
+      <div className="h-56 animate-pulse rounded-xl border border-[var(--border)] bg-[var(--card)]" />
     </div>
   );
 }

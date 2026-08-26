@@ -18,7 +18,7 @@ function FaqItem({ answer, question }: FaqItemProps) {
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className="flex w-full items-center justify-between py-4 text-left font-medium text-foreground transition-colors hover:text-cyan"
+        className="flex w-full items-center justify-between py-4 text-left font-medium text-foreground transition-colors hover:text-purple"
       >
         <span className="flex items-center gap-2.5 text-sm sm:text-base">
           <HelpCircle className="h-4.5 w-4.5 shrink-0 text-purple" />

@@ -5,7 +5,7 @@ import { useLanguage } from "@/src/context/LanguageContext";
 
 const stepStyles = [
   "bg-purple/10 border-purple/35 text-purple",
-  "bg-pink-500/10 border-[#ff79c6]/35 text-[#ff79c6]",
+  "bg-green/10 border-green/35 text-green",
   "bg-cyan/10 border-cyan/35 text-cyan",
 ] as const;
 

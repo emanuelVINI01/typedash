@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/src/components/Providers";
 import Footer from "@/src/components/layout/Footer";
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://typedash-beta.vercel.app"),
@@ -52,11 +59,11 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="pt-BR"
-      className="h-full antialiased"
+      lang="en"
+      className={`h-full antialiased ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-medium">
         <Providers>
           {children}
           <Footer />

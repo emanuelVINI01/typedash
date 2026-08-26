@@ -4,10 +4,11 @@ import Link from "next/link";
 import { ExternalLink, Keyboard, ShieldCheck, Sparkles } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import packageJson from "@/package.json";
+import { Flag } from "@/src/components/shared/Flag";
 import { useLanguage } from "@/src/context/LanguageContext";
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   const footerLinks = [
     { label: t.common.test, href: "/" },
@@ -23,7 +24,7 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr_0.8fr] md:items-start">
           <div className="max-w-md">
             <Link href="/" className="inline-flex items-center gap-3 text-foreground">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-purple/40 bg-purple/10 shadow-[0_0_22px_rgba(189,147,249,0.18)]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-purple/40 bg-purple/10 shadow-[0_0_22px_rgba(255,121,198,0.18)]">
                 <Keyboard className="h-5 w-5 text-purple" />
               </span>
               <span className="font-semibold tracking-tight">TypeDash</span>
@@ -40,7 +41,7 @@ export default function Footer() {
             </div>
             <div className="grid gap-2 text-sm">
               {footerLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="transition-colors hover:text-cyan">
+                <Link key={link.href} href={link.href} className="transition-colors hover:text-purple">
                   {link.label}
                 </Link>
               ))}
@@ -57,7 +58,7 @@ export default function Footer() {
                 href="https://github.com/emanuelVINI01/typedash"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex w-fit items-center gap-2 rounded-lg border border-cyan/20 bg-cyan/10 px-3 py-2 text-foreground transition-colors hover:border-cyan/50 hover:text-cyan"
+                className="inline-flex w-fit items-center gap-2 rounded-lg border border-purple/20 bg-purple/10 px-3 py-2 text-foreground transition-colors hover:border-purple/50 hover:text-purple"
               >
                 <FaGithub className="h-4 w-4" />
                 {t.common.repository}
@@ -69,7 +70,10 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-current-line/50 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} TypeDash. {t.footer.projectDescription}</p>
+          <p className="inline-flex items-center gap-2">
+            <Flag locale={language} size={13} />
+            &copy; {new Date().getFullYear()} TypeDash. {t.footer.projectDescription}
+          </p>
           <p className="text-comment/80">{t.footer.bottomNote}</p>
         </div>
       </div>

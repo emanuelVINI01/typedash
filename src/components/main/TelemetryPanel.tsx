@@ -50,7 +50,7 @@ export function TelemetryPanel({ duration, rankingRef }: TelemetryPanelProps) {
           >
             <ShieldCheck className="mr-2 inline h-4 w-4 text-purple" />
             {t.telemetry.loginNotice}
-            <Link href="/login" className="ml-1 font-semibold text-cyan">{t.telemetry.loginCta}</Link>.
+            <Link href="/login" className="ml-1 font-semibold text-purple">{t.telemetry.loginCta}</Link>.
           </motion.div>
         )}
       </div>

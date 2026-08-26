@@ -104,24 +104,24 @@ export function formatDashboardMetricDate(language: Language, createdAt: string)
 
 export function getHistoryWpmColor(wpm: number) {
   if (wpm >= 80) {
-    return "#50fa7b";
+    return "var(--success)";
   }
 
   if (wpm >= 50) {
-    return "#f1fa8c";
+    return "var(--warning)";
   }
 
-  return "#ff5555";
+  return "var(--error)";
 }
 
 export function getHistoryAccuracyColor(accuracy: number) {
   if (accuracy >= 95) {
-    return "#50fa7b";
+    return "var(--success)";
   }
 
   if (accuracy >= 80) {
-    return "#f1fa8c";
+    return "var(--warning)";
   }
 
-  return "#ff5555";
+  return "var(--error)";
 }

@@ -18,7 +18,7 @@ export function LiveStats({ timeLeft, wpm, accuracy, phase }: LiveStatsProps) {
     timeLeft <= 5
       ? "text-red"
       : timeLeft <= 10
-      ? "text-[var(--dracula-orange)]"
+      ? "text-[var(--warning)]"
       : "text-cyan";
 
   const cards = [

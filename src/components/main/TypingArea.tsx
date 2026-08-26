@@ -58,7 +58,7 @@ export function TypingArea({
       initial={{ opacity: 0, y: 18, scale: 0.99 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.32, ease: "easeOut" }}
-      className="relative cursor-text select-none overflow-hidden rounded-2xl border border-current-line/80 bg-[#21222c] p-4 outline-none shadow-2xl shadow-black/20 sm:p-6"
+      className="relative cursor-text select-none overflow-hidden rounded-2xl border border-current-line/80 bg-[var(--card)] p-4 outline-none shadow-2xl shadow-black/20 sm:p-6"
       aria-label={t.typingArea.ariaLabel}
     >
       {phase === "idle" && (
@@ -72,7 +72,7 @@ export function TypingArea({
               preventDefault: () => {},
             })
           }
-          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-2xl bg-[#21222c]/80 px-5 text-center text-xs uppercase tracking-widest text-comment backdrop-blur-sm transition-all duration-300 hover:bg-black/20 sm:text-sm"
+          className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-2xl bg-[var(--card)]/80 px-5 text-center text-xs uppercase tracking-widest text-comment backdrop-blur-sm transition-all duration-300 hover:bg-black/20 sm:text-sm"
         >
           {t.typingArea.overlay}
         </div>
@@ -90,9 +90,9 @@ export function TypingArea({
           const status = charStatuses[globalIdx];
           const isCursor = globalIdx === cursorPos;
 
-          let color = "#6272a4"; // pending
-          if (status === "correct") color = "#50fa7b";
-          if (status === "incorrect") color = "#ff5555";
+          let color = "var(--fg-subtle)"; // pending
+          if (status === "correct") color = "var(--success)";
+          if (status === "incorrect") color = "var(--error)";
 
           return (
             <span key={globalIdx} className="relative">
@@ -100,7 +100,7 @@ export function TypingArea({
               {isCursor && (
                 <span
                   className="cursor-blink absolute -left-0.5 top-0 bottom-0 w-0.5 rounded-full"
-                  style={{ background: "#bd93f9" }}
+                  style={{ background: "var(--accent)" }}
                 />
               )}
               <span

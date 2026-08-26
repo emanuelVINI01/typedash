@@ -11,11 +11,8 @@ export function DashboardErrorState({ error }: DashboardErrorStateProps) {
   const { t } = useLanguage();
 
   return (
-    <div
-      className="rounded-xl border px-6 py-8 text-center fade-in"
-      style={{ background: "#21222c", borderColor: "#ff5555" }}
-    >
-      <p className="text-sm font-medium" style={{ color: "#ff5555" }}>
+    <div className="fade-in rounded-xl border border-red/40 bg-[var(--card)] px-6 py-8 text-center">
+      <p className="text-sm font-medium text-red">
         {error === "auth"
           ? t.dashboardPage.loadingAuth
           : error === "load"
@@ -25,8 +22,7 @@ export function DashboardErrorState({ error }: DashboardErrorStateProps) {
       {error === "auth" && (
         <a
           href="/login"
-          className="inline-block mt-4 rounded-lg px-4 py-2 text-sm font-semibold transition-all"
-          style={{ background: "#bd93f9", color: "#282a36" }}
+          className="mt-4 inline-block rounded-lg bg-purple px-4 py-2 text-sm font-semibold text-background transition-all"
         >
           {t.dashboardPage.loginCta}
         </a>

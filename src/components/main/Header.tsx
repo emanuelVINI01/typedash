@@ -16,7 +16,7 @@ import {
   LogOut,
   Trophy,
 } from "lucide-react";
-import { LanguageToggle } from "@/src/components/main/LanguageToggle";
+import { LanguageSwitcher } from "@/src/components/shared/LanguageSwitcher";
 import { useLanguage } from "@/src/context/LanguageContext";
 
 export function Header() {
@@ -45,7 +45,7 @@ export function Header() {
       >
         <div className="mx-auto flex h-11 w-full max-w-7xl items-center justify-between gap-4">
           <Link href="/" className="group flex min-w-0 items-center gap-2.5">
-            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-purple/40 bg-purple/10 shadow-[0_0_20px_rgba(189,147,249,0.18)] transition-colors group-hover:border-cyan/50">
+            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-purple/40 bg-purple/10 shadow-[0_0_20px_rgba(255,121,198,0.18)] transition-colors group-hover:border-purple/70">
               <Image
                 src="/logo.png"
                 alt={t.header.logoAlt}
@@ -70,14 +70,14 @@ export function Header() {
                   key={href}
                   href={href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`relative text-xs font-semibold uppercase tracking-widest transition-colors hover:text-cyan ${isActive ? "text-cyan" : "text-comment"
+                  className={`relative text-xs font-semibold uppercase tracking-widest transition-colors hover:text-purple ${isActive ? "text-purple" : "text-comment"
                     }`}
                 >
                   {label}
                   {isActive && (
                     <motion.span
                       layoutId="typedash-desktop-nav-active"
-                      className="absolute -bottom-2 left-0 right-0 mx-auto h-0.5 rounded-full bg-cyan shadow-[0_0_10px_rgba(139,233,253,0.75)]"
+                      className="absolute -bottom-2 left-0 right-0 mx-auto h-0.5 rounded-full bg-purple shadow-[0_0_10px_rgba(255,121,198,0.75)]"
                       transition={{ type: "spring", stiffness: 420, damping: 34 }}
                     />
                   )}
@@ -88,7 +88,7 @@ export function Header() {
 
           {session ? (
             <div className="flex items-center gap-2">
-              <LanguageToggle />
+              <LanguageSwitcher />
               <div className="hidden max-w-[190px] flex-col items-end md:flex">
                 <span className="text-[10px] uppercase tracking-widest text-comment">{t.common.loggedIn}</span>
                 <span className="truncate text-sm font-medium text-foreground">
@@ -119,7 +119,7 @@ export function Header() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <LanguageToggle />
+              <LanguageSwitcher />
               <Link
                 href="/login"
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-purple/30 bg-purple px-3 text-xs font-semibold uppercase tracking-widest text-background shadow-lg shadow-purple/20 transition-transform hover:-translate-y-0.5"
@@ -142,7 +142,7 @@ export function Header() {
                 key={href}
                 href={href}
                 aria-current={isActive ? "page" : undefined}
-                className={`relative flex h-full min-w-0 flex-col items-center justify-between rounded-xl px-0.5 py-1.5 text-[9px] font-semibold uppercase tracking-tight transition-colors sm:px-1 sm:text-[10px] ${isActive ? "text-foreground" : "text-comment hover:text-cyan"
+                className={`relative flex h-full min-w-0 flex-col items-center justify-between rounded-xl px-0.5 py-1.5 text-[9px] font-semibold uppercase tracking-tight transition-colors sm:px-1 sm:text-[10px] ${isActive ? "text-foreground" : "text-comment hover:text-purple"
                   }`}
               >
                 {isActive && (

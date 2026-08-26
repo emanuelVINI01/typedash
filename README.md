@@ -1,49 +1,41 @@
 # TypeDash
 
-TypeDash is a mobile-first typing performance platform for measuring speed, accuracy and consistency. It captures typing telemetry, computes WPM, saves authenticated results, renders personal dashboards and exposes period-based rankings.
+A mobile-first typing test that actually tells you *why* your WPM is what it is. TypeDash times a run, scores it for speed, accuracy and consistency, and — if you sign in with GitHub — remembers every result so you can watch the trend instead of guessing at it.
 
-## Short Description
-
-Typing speed lab with Dracula UI, Framer Motion animations, GitHub authentication, WPM/accuracy telemetry, Recharts dashboards, ranking pages, practice resources and mobile bottom navigation.
+![TypeDash dashboard](public/dash_image.png)
 
 ## Features
 
-- 30-second typing test.
-- Live WPM, timer and accuracy cards.
-- Backspace-aware correction model.
-- Keystroke telemetry submitted to the metrics API.
-- Results screen with WPM trend chart.
-- Personal authenticated dashboard with history, filters and charts.
-- Public ranking periods: today, week, month and all time.
-- Practice resource page with training drills.
-- About page describing architecture and product goals.
-- GitHub login through Auth.js / NextAuth.
-- PostgreSQL persistence through Prisma.
-- Mobile-first Dracula theme with Framer Motion transitions.
+- 30-second typing test with live WPM, timer and accuracy cards.
+- Backspace-aware correction model — mistakes you fix don't count against you twice.
+- Full keystroke telemetry submitted to the metrics API and re-derived server-side (never trusts a client-computed score).
+- Results screen with a WPM-over-time chart for the run you just finished.
+- Personal authenticated dashboard: history table, sortable filters, and Recharts trend lines for WPM, accuracy and duration.
+- Public rankings by period — today, this week, this month, all time — one best result per person.
+- Practice page with focused drills for accuracy, rhythm and burst speed.
+- GitHub login via Auth.js / NextAuth, PostgreSQL persistence via Prisma.
+- PT/EN interface with a flag-based language switcher.
+- Dark, terminal-inspired UI with Framer Motion transitions and a mobile bottom-tab nav.
 
 ## Tech Stack
 
-- Next.js 16 App Router
-- React 19
-- TypeScript
+- Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS 4
 - Framer Motion
 - Auth.js / NextAuth
-- Prisma 7
-- PostgreSQL
+- Prisma 7 + PostgreSQL
 - Recharts
 - Zod
 - Lucide React
-- random-words
 
 ## Pages
 
-- `/` - typing test and ranking preview.
-- `/practice` - practice drills and training loop.
-- `/ranking` - public ranking by period.
-- `/dashboard` - authenticated personal metrics dashboard.
-- `/about` - project overview.
-- `/login` - GitHub authentication.
+- `/` — typing test and a ranking preview.
+- `/practice` — drills for accuracy, rhythm and burst speed.
+- `/ranking` — public leaderboard, filterable by period.
+- `/dashboard` — authenticated personal metrics dashboard.
+- `/about` — what TypeDash is and how it's built.
+- `/login` — GitHub authentication.
 
 ## Project Structure
 
@@ -51,33 +43,49 @@ Typing speed lab with Dracula UI, Framer Motion animations, GitHub authenticatio
 app/
   api/
     auth/[...nextauth]/route.ts
-    metrics/
+    metrics/route.ts
+    metrics/me/route.ts
+    metrics/ranking/route.ts
     words/route.ts
+  about/page.tsx
   dashboard/page.tsx
   login/page.tsx
+  practice/page.tsx
   ranking/page.tsx
-  sobre/page.tsx
-  treino/page.tsx
+  layout.tsx
   page.tsx
+  globals.css
 src/
   auth.ts
   prisma.ts
   components/
-    dashboard/
-    layout/
-    main/
-  services/
+    dashboard/       # stat cards, charts, history table, filters
+    layout/           # Footer
+    main/             # header, typing test UI, results, ranking
+    pages/            # page-level composition (e.g. About)
+    shared/           # Flag, LanguageSwitcher
+  context/            # LanguageContext
+  hooks/              # typing test, dashboard/ranking data, metric submission
+  i18n/                # en/pt dictionaries
+  services/            # metrics-service.ts (Prisma access layer)
   types/
+  utils/
 prisma/
   schema.prisma
+  migrations/
 public/
   dash_image.png
   logo.png
+  flags/
 ```
 
 ## Environment
 
-Create `.env` in the project root:
+Copy `.env.example` to `.env` and fill in real values:
+
+```bash
+cp .env.example .env
+```
 
 ```env
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
@@ -88,7 +96,7 @@ AUTH_GITHUB_ID="your-github-oauth-client-id"
 AUTH_GITHUB_SECRET="your-github-oauth-client-secret"
 ```
 
-For local GitHub OAuth, configure:
+For local GitHub OAuth, set the callback URL to:
 
 ```txt
 http://localhost:3000/api/auth/callback/github
@@ -107,16 +115,20 @@ Open `http://localhost:3000`.
 ## Scripts
 
 ```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
+npm run dev      # start the dev server
+npm run build    # production build
+npm run start    # run the production build
+npm run lint     # eslint
 ```
 
 ## Metrics Model
 
-TypeDash records typing events during a test. At the end of a run, the client posts the log to the metrics API. The service calculates WPM, accuracy and duration, then stores the result for authenticated users. Rankings select the best result per user for the selected period.
+TypeDash records every keystroke during a run as a `{ key, time, expected }` event. When the test ends, the client posts the full log to `/api/metrics` — WPM, accuracy and duration are all recalculated server-side from that log, so the score you see is never something the client just handed over. Results are stored per authenticated user, and rankings select each user's best result within the selected period. See [`docs/api.md`](docs/api.md) for the full API reference.
+
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for how to get set up, and please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
-No open-source license is declared yet.
+MIT — see [LICENSE](LICENSE).

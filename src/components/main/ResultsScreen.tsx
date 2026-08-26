@@ -42,26 +42,26 @@ export function ResultsScreen({
           icon={<Trophy className="h-7 w-7" />}
           label="WPM"
           value={wpm}
-          color="#bd93f9"
+          tone="accent"
           large
         />
         <ResultStatCard
           icon={<Activity className="h-5 w-5" />}
           label={t.results.accuracy}
           value={`${accuracy}%`}
-          color="#50fa7b"
+          tone="success"
         />
         <ResultStatCard
           icon={<CheckCircle2 className="h-5 w-5" />}
           label={t.results.correct}
           value={correct}
-          color="#50fa7b"
+          tone="success"
         />
         <ResultStatCard
           icon={<XCircle className="h-5 w-5" />}
           label={t.results.incorrect}
           value={incorrect}
-          color="#ff5555"
+          tone="error"
         />
       </div>
 
@@ -70,41 +70,45 @@ export function ResultsScreen({
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.12 }}
-        className="rounded-2xl border border-current-line/70 p-4 sm:p-6"
-        style={{ background: "#21222c" }}
+        className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-6"
       >
-        <p
-          className="text-xs uppercase tracking-widest mb-4"
-          style={{ color: "#6272a4" }}
-        >
-          {t.results.chartTitle}
-        </p>
+        <div
+          aria-hidden
+          className="waveform-motif pointer-events-none absolute inset-x-0 top-0 h-20 opacity-10"
+        />
+        <div className="relative mb-4 flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs uppercase tracking-widest text-[var(--fg-subtle)]">
+            {t.results.chartTitle}
+          </p>
+          <p className="font-mono text-xs font-semibold tracking-tight text-purple">
+            {wpm} WPM · {accuracy}% ACC
+          </p>
+        </div>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={wpmHistory} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-            <CartesianGrid stroke="#44475a" strokeDasharray="3 3" />
+            <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" />
             <XAxis
               dataKey="second"
-              tick={{ fill: "#6272a4", fontSize: 11 }}
+              tick={{ fill: "var(--fg-subtle)", fontSize: 11 }}
               tickFormatter={(v) => `${v}s`}
             />
-            <YAxis tick={{ fill: "#6272a4", fontSize: 11 }} />
+            <YAxis tick={{ fill: "var(--fg-subtle)", fontSize: 11 }} />
             <Tooltip content={<ResultsChartTooltip />} />
             <Line
               type="monotone"
               dataKey="wpm"
-              stroke="#bd93f9"
+              stroke="var(--accent)"
               strokeWidth={2.5}
               dot={false}
-              activeDot={{ r: 5, fill: "#bd93f9", stroke: "#282a36" }}
+              activeDot={{ r: 5, fill: "var(--accent)", stroke: "var(--card)" }}
             />
           </LineChart>
         </ResponsiveContainer>
 
-        <div className="flex justify-center pt-6">
+        <div className="relative flex justify-center pt-6">
           <button
             onClick={onReset}
-            className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 hover:scale-105 active:scale-95"
-            style={{ background: "#bd93f9", color: "#282a36" }}
+            className="flex items-center gap-2 rounded-xl bg-purple px-8 py-3 text-sm font-semibold tracking-wide text-background transition-all duration-200 hover:scale-105 active:scale-95"
           >
             <RotateCcw className="w-4 h-4" />
             {t.results.retry}

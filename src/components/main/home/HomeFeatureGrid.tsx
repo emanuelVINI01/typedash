@@ -6,11 +6,11 @@ import { useLanguage } from "@/src/context/LanguageContext";
 
 const featureStyles = [
   "text-purple border-purple/20 bg-purple/10",
-  "text-[#ff79c6] border-[#ff79c6]/20 bg-[#ff79c6]/10",
-  "text-[#f1fa8c] border-[#f1fa8c]/20 bg-[#f1fa8c]/10",
-  "text-green border-green/20 bg-green/10",
   "text-cyan border-cyan/20 bg-cyan/10",
-  "text-[#ffb86c] border-[#ffb86c]/20 bg-[#ffb86c]/10",
+  "text-orange border-orange/20 bg-orange/10",
+  "text-green border-green/20 bg-green/10",
+  "text-purple border-purple/20 bg-purple/10",
+  "text-orange border-orange/20 bg-orange/10",
 ] as const;
 
 const featureIcons = [Target, Eye, Trophy, TrendingUp, Smartphone, Code] as const;
@@ -41,7 +41,7 @@ export function HomeFeatureGrid() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               whileHover={{ y: -4 }}
-              className="flex flex-col gap-3 rounded-xl border border-current-line/50 bg-current-line/15 p-5 transition-shadow hover:border-current-line/80 hover:shadow-lg hover:shadow-purple/5"
+              className="flex flex-col gap-3 rounded-xl border border-current-line/50 bg-current-line/15 p-5 transition-colors hover:border-purple/40"
             >
               <div className={`flex h-10 w-10 items-center justify-center rounded-lg border ${featureStyles[index]}`}>
                 <Icon className="h-5 w-5" />

@@ -22,7 +22,7 @@ export function FilterBar({ value, onChange }: Props) {
 
   return (
     <div className="flex w-full max-w-full items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:pb-0">
-      <span className="text-xs font-semibold uppercase tracking-widest mr-1" style={{ color: "#6272a4" }}>
+      <span className="mr-1 text-xs font-semibold uppercase tracking-widest text-[var(--fg-subtle)]">
         {t.common.sort}:
       </span>
       {options.map((opt) => {
@@ -31,13 +31,10 @@ export function FilterBar({ value, onChange }: Props) {
           <button
             key={opt.key}
             onClick={() => onChange(opt.key)}
-            className="shrink-0 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer"
-            style={{
-              background: active ? "#bd93f9" : "#21222c",
-              color: active ? "#282a36" : "#f8f8f2",
-              borderColor: active ? "#bd93f9" : "#44475a",
-              boxShadow: active ? "0 0 10px rgba(189,147,249,0.35)" : "none",
-            }}
+            className={`shrink-0 cursor-pointer rounded-lg border px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${active
+              ? "border-purple bg-purple text-background shadow-[0_0_10px_rgba(255,121,198,0.35)]"
+              : "border-[var(--border)] bg-[var(--card)] text-[var(--fg)] hover:border-purple/40"
+              }`}
           >
             {opt.label}
           </button>

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   CartesianGrid,
   Line,
@@ -32,36 +33,37 @@ export function DashboardChartCard({
   const { t } = useLanguage();
 
   return (
-    <div
-      className="flex flex-col gap-3 rounded-xl border p-5"
-      style={{ background: "#21222c", borderColor: "#44475a" }}
+    <motion.div
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.2 }}
+      className="flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--card)] p-5 transition-colors hover:border-purple/40"
     >
       <div>
-        <h3 className="text-sm font-semibold" style={{ color: "#f8f8f2" }}>
+        <h3 className="text-sm font-semibold text-[var(--fg)]">
           {title}
         </h3>
-        <p className="mt-0.5 text-xs" style={{ color: "#6272a4" }}>
+        <p className="mt-0.5 text-xs text-[var(--fg-muted)]">
           {subtitle}
         </p>
       </div>
       <ResponsiveContainer width="100%" height={180}>
         <LineChart data={data} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#44475a" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
           <XAxis
             dataKey="index"
-            tick={{ fill: "#6272a4", fontSize: 11 }}
+            tick={{ fill: "var(--fg-subtle)", fontSize: 11 }}
             tickLine={false}
             axisLine={false}
             label={{
               value: t.dashboardPage.chartAxisTest,
               position: "insideBottom",
               offset: -2,
-              fill: "#6272a4",
+              fill: "var(--fg-subtle)",
               fontSize: 10,
             }}
           />
           <YAxis
-            tick={{ fill: "#6272a4", fontSize: 11 }}
+            tick={{ fill: "var(--fg-subtle)", fontSize: 11 }}
             tickLine={false}
             axisLine={false}
             domain={domain}
@@ -69,10 +71,10 @@ export function DashboardChartCard({
           />
           <Tooltip
             contentStyle={{
-              background: "#282a36",
-              border: "1px solid #44475a",
+              background: "var(--card-hover)",
+              border: "1px solid var(--border)",
               borderRadius: "8px",
-              color: "#f8f8f2",
+              color: "var(--fg)",
               fontSize: 12,
             }}
             itemStyle={{ color }}
@@ -89,6 +91,6 @@ export function DashboardChartCard({
           />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </motion.div>
   );
 }

@@ -19,33 +19,40 @@ export function StatsOverview({ metrics }: Props) {
       icon: <Zap size={16} />,
       label: t.dashboardPage.stats.bestWpm,
       value: `${stats.bestWpm}`,
-      color: "#bd93f9",
     },
     {
       icon: <BarChart2 size={16} />,
       label: t.dashboardPage.stats.averageWpm,
       value: `${stats.averageWpm}`,
-      color: "#ff79c6",
     },
     {
       icon: <Target size={16} />,
       label: t.dashboardPage.stats.averageAccuracy,
       value: `${stats.averageAccuracy}%`,
-      color: "#50fa7b",
     },
     {
       icon: <Clock size={16} />,
       label: t.dashboardPage.stats.completedTests,
       value: `${stats.completedTests}`,
-      color: "#8be9fd",
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card) => (
-        <DashboardStatCard key={card.label} {...card} />
-      ))}
+    <div className="relative">
+      <div
+        aria-hidden
+        className="waveform-motif pointer-events-none absolute -inset-x-2 -top-6 h-16 opacity-10"
+      />
+      {metrics.length > 0 && (
+        <p className="relative mb-3 font-mono text-xs font-semibold tracking-tight text-purple">
+          {stats.bestWpm} WPM · {stats.averageAccuracy}% ACC
+        </p>
+      )}
+      <div className="relative grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {cards.map((card) => (
+          <DashboardStatCard key={card.label} {...card} />
+        ))}
+      </div>
     </div>
   );
 }

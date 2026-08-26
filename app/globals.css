@@ -1,43 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --font-geist-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-geist-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
-  --dracula-bg: #282a36;
-  --dracula-surface: #343746;
-  --dracula-card: #44475a;
-  --dracula-border: #44475a;
-  --dracula-fg: #f8f8f2;
-  --dracula-comment: #a7b0c8;
-  --dracula-cyan: #8be9fd;
-  --dracula-purple: #bd93f9;
-  --dracula-green: #50fa7b;
-  --dracula-pink: #ff79c6;
-  --dracula-red: #ff5555;
-  --dracula-orange: #ffb86c;
-  --dracula-yellow: #f1fa8c;
+  /* Neutral ramp (shared across sibling projects) */
+  --bg: #191a21;
+  --surface: #21222c;
+  --card: #282a36;
+  --card-hover: #2f3244;
+  --border: #44475a;
+  --border-soft: rgba(68, 71, 90, 0.5);
+  --fg: #f8f8f2;
+  --fg-muted: #a7b0c8;
+  --fg-subtle: #6c7086;
 
-  --background: var(--dracula-bg);
-  --foreground: var(--dracula-fg);
-  --comment: var(--dracula-comment);
-  --purple: var(--dracula-purple);
-  --red: var(--dracula-red);
-  --green: var(--dracula-green);
-  --cyan: var(--dracula-cyan);
-  --current-line: var(--dracula-card);
+  /* Shared semantic colors */
+  --success: #50fa7b;
+  --error: #ff5555;
+  --warning: #ffb86c;
+  --info: #8be9fd;
+
+  /* TypeDash accent: pink (speed / streak / energy) */
+  --accent: #ff79c6;
+  --accent-rgb: 255, 121, 198;
+
+  --font-jetbrains-mono: "JetBrains Mono", "Fira Code", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+
+  /* Legacy aliases so existing utility classes (bg-purple, text-comment, bg-current-line, ...)
+     keep working while resolving to the new token values. */
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --comment: var(--fg-muted);
+  /* Historically `current-line` shared the same literal hex as the border
+     tone, and is used throughout as both a border color and a translucent
+     panel fill (bg-current-line/10..40). Alias it to --border, not --card,
+     to reproduce that exactly with the new tokens. */
+  --current-line: var(--border);
+  --purple: var(--accent);
+  --cyan: var(--info);
+  --green: var(--success);
+  --red: var(--error);
+  --orange: var(--warning);
 }
 
 @theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-accent: var(--accent);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-comment: var(--comment);
-  --color-purple: var(--purple);
-  --color-red: var(--red);
-  --color-green: var(--green);
-  --color-cyan: var(--cyan);
   --color-current-line: var(--current-line);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-purple: var(--purple);
+  --color-cyan: var(--cyan);
+  --color-green: var(--green);
+  --color-red: var(--red);
+  --color-orange: var(--orange);
+
+  --font-sans: var(--font-jetbrains-mono), "JetBrains Mono", "Fira Code", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", "Fira Code", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
 }
 
 body {
@@ -47,7 +79,7 @@ body {
   overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
   position: relative;
 }
 
@@ -90,15 +122,15 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.032;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
 }
 
 ::selection {
-  background: var(--dracula-purple);
-  color: var(--dracula-bg);
+  background: var(--accent);
+  color: var(--bg);
 }
 
 ::-webkit-scrollbar {
@@ -107,19 +139,42 @@ body::before {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--dracula-bg);
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--dracula-card);
+  background: var(--border);
   border-radius: 999px;
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .glass {
-  background: rgba(36, 39, 54, 0.68);
+  background: rgba(25, 26, 33, 0.68);
   border: 1px solid rgba(68, 71, 90, 0.68);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+}
+
+/* Subtle WPM waveform / signal-line motif — decorative background for hero
+   surfaces and dashboard stat panels. Apply at low opacity (e.g. opacity-10). */
+.waveform-motif {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='48' viewBox='0 0 140 48'%3E%3Cpolyline points='0,24 8,10 16,38 24,14 32,34 40,6 48,28 56,18 64,40 72,12 80,30 88,20 96,36 104,8 112,26 120,16 128,32 136,22 140,24' fill='none' stroke='%23ff79c6' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 140px 48px;
 }
 
 @keyframes blink {
@@ -158,11 +213,11 @@ body::before {
 
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(189, 147, 249, 0);
+    box-shadow: 0 0 0 0 rgba(255, 121, 198, 0);
   }
 
   50% {
-    box-shadow: 0 0 12px 4px rgba(189, 147, 249, 0.25);
+    box-shadow: 0 0 12px 4px rgba(255, 121, 198, 0.25);
   }
 }
 

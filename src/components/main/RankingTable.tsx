@@ -25,7 +25,7 @@ export function RankingTable({ metrics, loading, periodLabel }: Props) {
 
   if (metrics.length === 0) {
     return (
-      <div className="flex h-28 items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 text-center text-sm text-comment">
+      <div className="flex h-28 items-center justify-center rounded-xl border border-dashed border-current-line bg-current-line/5 px-6 text-center text-sm text-comment">
         {t.ranking.emptyStart} {periodLabel.toLowerCase()} {t.ranking.emptyEnd}
       </div>
     );

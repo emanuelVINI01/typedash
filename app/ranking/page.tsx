@@ -39,11 +39,15 @@ export default function RankingPage() {
             { icon: Users, ...t.rankingPage.cards[1] },
             { icon: Trophy, ...t.rankingPage.cards[2] },
           ].map(({ icon: Icon, title, text }) => (
-            <article key={title} className="rounded-xl border border-current-line/70 bg-current-line/20 p-4">
+            <motion.article
+              key={title}
+              whileHover={{ y: -3 }}
+              className="rounded-xl border border-current-line/70 bg-current-line/20 p-4 transition-colors hover:border-purple/40"
+            >
               <Icon className="h-5 w-5 text-cyan" />
               <h2 className="mt-4 font-semibold text-foreground">{title}</h2>
               <p className="mt-2 text-sm leading-6 text-comment">{text}</p>
-            </article>
+            </motion.article>
           ))}
         </section>
 

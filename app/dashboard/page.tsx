@@ -25,13 +25,10 @@ export default function DashboardPage() {
       <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-8 px-4 py-6 md:px-8 md:py-8">
         {/* Page Title */}
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
-          <h1
-            className="text-2xl font-bold tracking-tight"
-            style={{ color: "#f8f8f2" }}
-          >
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--fg)]">
             {t.dashboardPage.title}
           </h1>
-          <p className="text-sm mt-1" style={{ color: "#6272a4" }}>
+          <p className="mt-1 text-sm text-[var(--fg-subtle)]">
             {t.dashboardPage.subtitle}
           </p>
         </motion.div>
@@ -54,10 +51,7 @@ export default function DashboardPage() {
 
             {/* History */}
             <section className="flex flex-col gap-4 fade-in">
-              <h2
-                className="text-sm font-semibold uppercase tracking-widest"
-                style={{ color: "#6272a4" }}
-              >
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-[var(--fg-subtle)]">
                 {t.dashboardPage.historyTitle}
               </h2>
               <FilterBar value={sortKey} onChange={setSortKey} />

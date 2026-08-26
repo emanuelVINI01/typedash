@@ -1,6 +1,7 @@
 "use client";
 
 import type { TypingMetric } from "@/src/types/typing";
+import { motion } from "framer-motion";
 import { User } from "lucide-react";
 import { useLanguage } from "@/src/context/LanguageContext";
 import { RankingIndicator } from "@/src/components/main/RankingIndicator";
@@ -25,7 +26,7 @@ export function RankingCards({ metrics, loading, periodLabel }: Props) {
 
   if (metrics.length === 0) {
     return (
-      <div className="flex h-28 items-center justify-center rounded-xl border border-current-line bg-current-line/5 px-6 text-center text-sm text-comment">
+      <div className="flex h-28 items-center justify-center rounded-xl border border-dashed border-current-line bg-current-line/5 px-6 text-center text-sm text-comment">
         {t.ranking.emptyStart} {periodLabel.toLowerCase()} {t.ranking.emptyEnd}
       </div>
     );
@@ -50,9 +51,11 @@ export function RankingCards({ metrics, loading, periodLabel }: Props) {
           const isLast = index === metrics.length - 1;
 
           return (
-            <article
+            <motion.article
               key={metric.id}
-              className={`flex w-full flex-col gap-2 p-2.5 ${!isLast ? "border-r border-current-line" : ""}`}
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
+              className={`flex w-full flex-col gap-2 p-2.5 transition-colors hover:bg-purple/5 ${!isLast ? "border-r border-current-line" : ""}`}
             >
               {/* Header: medalha + ícone user + nome */}
               <div className="flex min-w-0 items-center gap-1.5">
@@ -89,7 +92,7 @@ export function RankingCards({ metrics, loading, periodLabel }: Props) {
 
               {/* Data */}
               <p className="text-[9px] text-comment/70">{date}</p>
-            </article>
+            </motion.article>
           );
         })}
       </div>

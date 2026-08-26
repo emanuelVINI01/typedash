@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowRight, BarChart3, Keyboard, ShieldCheck, Sparkles, Trophy } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Header } from "@/src/components/main/Header";
@@ -68,11 +69,13 @@ export function AboutPageContent() {
             const Icon = pillarIcons[index];
 
             return (
-              <article
+              <motion.article
                 key={pillar.title}
-                className="rounded-2xl border border-current-line bg-current-line/20 p-5"
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className="rounded-xl border border-current-line bg-current-line/20 p-5 transition-colors hover:border-purple/40"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple/10 text-purple">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple/10 text-purple">
                   <Icon size={20} />
                 </div>
                 <h2 className="mt-4 text-lg font-semibold text-foreground">
@@ -81,7 +84,7 @@ export function AboutPageContent() {
                 <p className="mt-2 text-sm leading-6 text-comment">
                   {pillar.description}
                 </p>
-              </article>
+              </motion.article>
             );
           })}
         </section>
@@ -100,7 +103,11 @@ export function AboutPageContent() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-2xl border border-current-line bg-current-line/10 p-5">
+            <motion.div
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.2 }}
+              className="rounded-xl border border-current-line bg-current-line/10 p-5 transition-colors hover:border-purple/40"
+            >
               <ShieldCheck className="h-6 w-6 text-green" />
               <h3 className="mt-4 font-semibold text-foreground">
                 {t.aboutPage.userDataTitle}
@@ -108,8 +115,12 @@ export function AboutPageContent() {
               <p className="mt-2 text-sm leading-6 text-comment">
                 {t.aboutPage.userDataText}
               </p>
-            </div>
-            <div className="rounded-2xl border border-current-line bg-current-line/10 p-5">
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.2 }}
+              className="rounded-xl border border-current-line bg-current-line/10 p-5 transition-colors hover:border-purple/40"
+            >
               <Sparkles className="h-6 w-6 text-cyan" />
               <h3 className="mt-4 font-semibold text-foreground">
                 {t.aboutPage.technicalBaseTitle}
@@ -117,7 +128,7 @@ export function AboutPageContent() {
               <p className="mt-2 text-sm leading-6 text-comment">
                 {t.aboutPage.technicalBaseText}
               </p>
-            </div>
+            </motion.div>
           </div>
         </section>
       </main>

@@ -22,7 +22,7 @@ export default function PracticePage() {
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:px-6 sm:py-10">
         <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan/25 bg-cyan/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-cyan sm:text-xs">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-purple sm:text-xs">
               <WandSparkles className="h-3.5 w-3.5" />
               {t.practicePage.badge}
             </div>
@@ -33,7 +33,7 @@ export default function PracticePage() {
               {t.practicePage.subtitle}
             </p>
           </div>
-          <Link href="/" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-cyan px-5 text-sm font-semibold text-background shadow-lg shadow-cyan/20">
+          <Link href="/" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-purple px-5 text-sm font-semibold text-background shadow-lg shadow-purple/20">
             {t.practicePage.openTest}
             <ArrowRight className="h-4 w-4" />
           </Link>
@@ -47,7 +47,8 @@ export default function PracticePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ delay: index * 0.05 }}
-              className="rounded-2xl border border-current-line/70 bg-current-line/20 p-5"
+              whileHover={{ y: -3 }}
+              className="rounded-xl border border-current-line/70 bg-current-line/20 p-5 transition-colors hover:border-purple/40"
             >
               <Icon className="h-6 w-6 text-purple" />
               <h2 className="mt-5 text-lg font-semibold text-foreground">{title}</h2>

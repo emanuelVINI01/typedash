@@ -16,12 +16,9 @@ export function ResultsChartTooltip({
   }
 
   return (
-    <div
-      className="rounded-lg px-3 py-2 text-sm"
-      style={{ background: "#44475a", color: "#f8f8f2" }}
-    >
-      <p style={{ color: "#6272a4" }}>{`${label}s`}</p>
-      <p style={{ color: "#bd93f9" }}>{`${payload[0].value} WPM`}</p>
+    <div className="rounded-lg border border-[var(--border)] bg-[var(--card-hover)] px-3 py-2 text-sm text-[var(--fg)]">
+      <p className="text-[var(--fg-subtle)]">{`${label}s`}</p>
+      <p className="font-semibold text-purple">{`${payload[0].value} WPM`}</p>
     </div>
   );
 }
