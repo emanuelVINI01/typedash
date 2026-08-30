@@ -26,6 +26,8 @@ export function TypeDashHome() {
     consumeTypingLog: typingTest.consumeTypingLog,
     onSubmitted: refreshRanking,
     phase: typingTest.phase,
+    words: typingTest.words,
+    wordsSignature: typingTest.wordsSignature,
   });
 
   return (

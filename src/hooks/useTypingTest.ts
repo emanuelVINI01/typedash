@@ -21,6 +21,7 @@ import {
 export function useTypingTest() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [words, setWords] = useState<string[]>([]);
+  const [wordsSignature, setWordsSignature] = useState<string>("");
   const [charStatuses, setCharStatuses] = useState<CharStatus[]>([]);
   const [cursorPos, setCursorPos] = useState(0);
   const [timeLeft, setTimeLeft] = useState(TEST_DURATION);
@@ -41,10 +42,11 @@ export function useTypingTest() {
   const fullText = useMemo(() => buildTypingText(words), [words]);
   const finalWpm = useMemo(() => getFinalWpm(wpmHistory), [wpmHistory]);
 
-  const resetTypingState = useCallback((nextWords: string[]) => {
+  const resetTypingState = useCallback((nextWords: string[], nextSignature: string) => {
     const text = buildTypingText(nextWords);
 
     setWords(nextWords);
+    setWordsSignature(nextSignature);
     setCharStatuses(createPendingStatuses(text));
     setCursorPos(0);
     setLiveWpm(0);
@@ -59,7 +61,9 @@ export function useTypingTest() {
     try {
       const res = await fetch("/api/words");
       const data = await res.json();
-      resetTypingState(Array.isArray(data) ? data : []);
+      const nextWords = Array.isArray(data?.words) ? data.words : [];
+      const nextSignature = typeof data?.signature === "string" ? data.signature : "";
+      resetTypingState(nextWords, nextSignature);
     } catch (error) {
       console.error("Failed to fetch words:", error);
     }
@@ -231,6 +235,7 @@ export function useTypingTest() {
     reset,
     timeLeft,
     words,
+    wordsSignature,
     wpmHistory,
   };
 }

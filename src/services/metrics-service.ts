@@ -3,7 +3,16 @@ import type { RankingPeriod, TypingEvent } from "../types/typing";
 import { prisma } from "@/src/prisma";
 import crypto from "crypto";
 
-export function calculateWpm(metrics: TypingEvent[]) {
+/**
+ * Tracks the authoritative cursor position in `fullText` as the log is replayed,
+ * so scoring never trusts the client-supplied `event.expected` field.
+ */
+function nextPosition(positionStack: number[], currentPosition: number): number {
+  positionStack.push(currentPosition);
+  return currentPosition + 1;
+}
+
+export function calculateWpm(metrics: TypingEvent[], fullText: string) {
     if (metrics.length < 2) return 0;
 
     // 1. Calcular o tempo decorrido em minutos
@@ -15,17 +24,24 @@ export function calculateWpm(metrics: TypingEvent[]) {
 
     // 2. Simular o estado final para contar apenas caracteres corretos (net)
     // Isso evita contar caracteres que foram apagados no meio do caminho.
+    // A posição/expected vêm de `fullText` (assinado pelo servidor), nunca do cliente.
     let correctCount = 0;
+    let position = 0;
     const statusStack: ("correct" | "incorrect")[] = [];
+    const positionStack: number[] = [];
 
     for (const event of metrics) {
         if (event.key === "Backspace") {
             const last = statusStack.pop();
+            const lastPosition = positionStack.pop();
             if (last === "correct") correctCount = Math.max(0, correctCount - 1);
+            if (lastPosition !== undefined) position = lastPosition;
         } else {
-            const isCorrect = event.key === event.expected;
+            const expected = fullText[position];
+            const isCorrect = expected !== undefined && event.key === expected;
             if (isCorrect) correctCount++;
             statusStack.push(isCorrect ? "correct" : "incorrect");
+            position = nextPosition(positionStack, position);
         }
     }
 
@@ -36,24 +52,30 @@ export function calculateWpm(metrics: TypingEvent[]) {
 }
 
 
-export function calculateAccuracy(metrics: TypingEvent[]) {
+export function calculateAccuracy(metrics: TypingEvent[], fullText: string) {
   if (metrics.length === 0) return 100;
 
   let correctCount = 0;
   let incorrectCount = 0;
+  let position = 0;
   const stack: boolean[] = [];
+  const positionStack: number[] = [];
 
   for (const event of metrics) {
     if (event.key === "Backspace") {
       const wasCorrect = stack.pop();
+      const lastPosition = positionStack.pop();
       if (wasCorrect === true) correctCount = Math.max(0, correctCount - 1);
       else if (wasCorrect === false)
         incorrectCount = Math.max(0, incorrectCount - 1);
+      if (lastPosition !== undefined) position = lastPosition;
     } else {
-      const isCorrect = event.key === event.expected;
+      const expected = fullText[position];
+      const isCorrect = expected !== undefined && event.key === expected;
       if (isCorrect) correctCount++;
       else incorrectCount++;
       stack.push(isCorrect);
+      position = nextPosition(positionStack, position);
     }
   }
 
@@ -62,18 +84,31 @@ export function calculateAccuracy(metrics: TypingEvent[]) {
   return (correctCount / total) * 100;
 }
 
-export function getCorrectKeys(metrics: TypingEvent[]) {
-  return metrics.filter(
-    (event) => event.key !== "Backspace" && event.key === event.expected
-  ).length;
+export function getCorrectKeys(metrics: TypingEvent[], fullText: string) {
+  let position = 0;
+  let count = 0;
+
+  for (const event of metrics) {
+    if (event.key === "Backspace") {
+      position = Math.max(0, position - 1);
+      continue;
+    }
+
+    const expected = fullText[position];
+    if (expected !== undefined && event.key === expected) count++;
+    position++;
+  }
+
+  return count;
 }
 
 /**
  * Prepara o objeto Metric pronto para ser salvo via Prisma.
+ * `fullText` é derivado de `words`, cuja assinatura já foi validada pelo caller.
  */
-export function prepareMetric(userId: string, userName: string, metrics: TypingEvent[]) {
-  const wpm = calculateWpm(metrics);
-  const accuracy = calculateAccuracy(metrics);
+export function prepareMetric(userId: string, userName: string, metrics: TypingEvent[], fullText: string) {
+  const wpm = calculateWpm(metrics, fullText);
+  const accuracy = calculateAccuracy(metrics, fullText);
 
   // Calcular a duração em segundos
   const startTime = metrics[0]?.time ?? 0;
@@ -96,8 +131,8 @@ export function prepareMetric(userId: string, userName: string, metrics: TypingE
 }
 
 
-export async function saveMetric(userId: string, userName: string, metrics: TypingEvent[]) {
-  const data = prepareMetric(userId, userName, metrics);
+export async function saveMetric(userId: string, userName: string, metrics: TypingEvent[], fullText: string) {
+  const data = prepareMetric(userId, userName, metrics, fullText);
 
   return await prisma.typingMetric.create({
     data,

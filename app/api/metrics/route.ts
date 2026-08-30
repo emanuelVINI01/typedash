@@ -2,14 +2,23 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/src/auth";
 import { saveMetric } from "@/src/services/metrics-service";
+import { verifyWordsSignature } from "@/src/utils/words-signature";
 
 const TypingEventSchema = z.object({
   key: z.string(),
   time: z.number(),
+  // Mantido por compatibilidade de payload, mas ignorado nos cálculos: a
+  // fonte da verdade do texto esperado agora é `words`, validado por assinatura.
   expected: z.string(),
 });
 
 const LogSchema = z.array(TypingEventSchema);
+
+const MetricsPayloadSchema = z.object({
+  log: LogSchema,
+  words: z.array(z.string()).min(1),
+  signature: z.string().min(1),
+});
 
 export async function POST(request: Request) {
   try {
@@ -19,16 +28,16 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    
-    // Validar se o log existe e é um array
-    if (!body.log || !Array.isArray(body.log)) {
-      return NextResponse.json({ error: "Missing or invalid log" }, { status: 400 });
-    }
 
     // Validação rigorosa com Zod
-    const validatedLog = LogSchema.parse(body.log);
+    const { log: validatedLog, words, signature } = MetricsPayloadSchema.parse(body);
 
-    const result = await saveMetric(session.user.id, session.user.name ?? "Unknown", validatedLog);
+    const fullText = words.join(" ");
+    if (!verifyWordsSignature(fullText, signature)) {
+      return NextResponse.json({ error: "Invalid words signature" }, { status: 400 });
+    }
+
+    const result = await saveMetric(session.user.id, session.user.name ?? "Unknown", validatedLog, fullText);
 
     return NextResponse.json({ success: true, id: result.id });
   } catch (error) {
